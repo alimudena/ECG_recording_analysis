@@ -1,0 +1,15 @@
+<CEDResources>
+	<DocRes>
+		<View>
+			<WPlace flags="0" showc="1" minx="-1" miny="-1" maxx="-1" maxy="-1" t="-4" b="406" l="107" r="1737"/>
+			<Font hgt="-11" hthou="-115" wgt="400" paf="16" fnam="Times New Roman"/>
+			<Chan Chan="0" DMode="1" DError="1" DSubMd="2" Vis="1" Ax="1" AxMin="0" AxMax="0.15978613054337065" AdcAxMax="0.15978613054337065" AxType="1" ChType="127"/>
+			<XInfo Left="0" Right="269.97840172786175" XAxSmall="5" VCLabMode="2" HCLabMode="1"/>
+			<ChOrder Chans="1">
+				<c id="0" Chan="0"/>
+			</ChOrder>
+			<CursVals XZero="0" YZero="0" Mode="0"/>
+			<CursRegs XZero="0" YZero="0" Mode="0"/>
+		</View>
+	</DocRes>
+</CEDResources>
