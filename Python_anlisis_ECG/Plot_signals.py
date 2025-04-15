@@ -4,7 +4,8 @@ import scipy.io
 import matplotlib.pyplot as plt
 
 # Read the SMR file
-reader = neo.Spike2IO(filename='02_CTB_setup/test01_04-02-2025.smr')
+name = "EXP002/raton1_est_anestesia"
+reader = neo.Spike2IO(filename="Python_anlisis_ECG/02_CTB_setup_experiments/"+name+".smr")
 data = reader.read()[0]
 
 # Extract the signal you want to plot
@@ -15,7 +16,7 @@ sampling_rate = signal.sampling_rate.magnitude  # Frecuencia de muestreo
 print(signal.sampling_rate)
 
 
-scipy.io.savemat('test01_04-02-2025.mat', {'signal': signal_array, 'sampling_rate': sampling_rate})
+scipy.io.savemat("Python_anlisis_ECG/MAT/"+name+'.mat', {'signal': signal_array, 'sampling_rate': sampling_rate})
 # Create a plot
 
 plt.figure(1)
