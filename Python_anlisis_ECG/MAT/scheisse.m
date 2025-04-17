@@ -1,27 +1,40 @@
 clc
 clear
+close all
 
-folder = "EXP004";
 
-file = "RATON1_30AN_30EST_30AN.mat";
-threshold = 0.6;
-save_option = 0;
+EXP_folder = "EXP004/";
 
-process_file(folder, file, threshold, save_option);
-fprintf(folder+"\"+file+" Done\r\n")
+%%%%%%%%%%%%%%%%%%%%%%%%% R1
+data = load(EXP_folder+'RATON1_30AN_30EST_30AN.mat');
+[ECG, stim_reference, d3, fs, time] = extract_data(data);
 
-%%
-EXP_folder = "EXP004/data_extracted/";
-load(EXP_folder+'RATON1_30AN_30EST_30AN.mat')
-fs = 10000;
+
+
+leg                         = "R1-30AN-30EST-30AN - EXP004";
+th                          = 0.6;
+
+[P_locs, Q_locs, R_locs, S_locs, T_locs, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
+[time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 30, fs, ECG, R_locs);
+
+leg_1                       = leg;
+time_1                      = time;
 stim_ref_1                  = stim_reference;
 ECG_1                       = ECG;
-time_1                      = time;
+P_locs_1                    = P_locs;
+Q_locs_1                    = Q_locs;
+R_locs_1                    = R_locs;
+S_locs_1                    = S_locs;
+T_locs_1                    = T_locs;
+PR_1                        = PR;
+PS_1                        = PS;
+RS_1                        = RS;
+RT_1                        = RT;
+QRS_1                       = QRS;
+QT_1                        = QT;
+ST_1                        = ST;
+RT_voltage_1                = RT_voltage;
+time_intervals_bpm_1        = time_intervals_bpm;
+BPM_1                       = BPM;
 
-leg_1                       = "R1-30AN-30EST-30AN - EXP004";
-R_locs_1                    = peak_detection(ECG_1, 0.6, fs);
-[BPM_1, interval_1]         = BMP_calculation(R_locs_1, Ts);
-fprintf(leg_1+"\r\n")
-if PLOT_ECGS == 1
-    plot_ECG(time_1, ECG_1, R_locs_1, leg_1)
-end
+functions_plotting(time, ECG, stim_reference, P_locs, Q_locs, R_locs, S_locs, T_locs, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
