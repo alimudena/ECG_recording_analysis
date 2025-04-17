@@ -79,7 +79,7 @@ function  [locs_P, locs_T] = PT_extract(fs, locs_R, locs_Q, locs_S, ECG)
         s = locs_S(i);
         
         % P: pico antes de Q (en una ventana de 40-60ms)
-        win_p = round(0.04*fs); 
+        win_p = round(0.03*fs); 
         [~, idx_p] = max(ECG(max(1, q - win_p):q));
         locs_P(i) = max(1, q - win_p) + idx_p - 1;
         

@@ -1,7 +1,7 @@
 clc
 clear
-% close all
-use_filter = 1;
+close all
+
 
 EXP_folder = "EXP004/";
 fs_interp = 4; % Hz, frecuencia de interpolación
@@ -10,13 +10,10 @@ fs_interp = 4; % Hz, frecuencia de interpolación
 data = load(EXP_folder+'RATON1_30AN_30EST_30AN.mat');
 [ECG, stim_reference, d3, fs, time] = extract_data(data);
 
-if (use_filter == 1)
-    ECG = filter_ECG(ECG, fs);
-end
 
 
 leg                         = "R1-30AN-30EST-30AN - EXP004";
-th                          = 0.1;
+th                          = 0.6;
 
 [P_locs, Q_locs, R_locs, S_locs, T_locs, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
 [time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 30, fs, ECG, R_locs);
@@ -65,7 +62,6 @@ for i = 1:n_windows
     segment = RR_interp(idx_start:idx_end);
     
     [pxx, f] = pwelch(segment, [], [], [], fs_interp);
-    pxx_multiple(i, :) = pxx;
     LF = bandpower(pxx, f, [0.15 1.5], 'psd');
     HF = bandpower(pxx, f, [2 10], 'psd');
     
@@ -77,26 +73,20 @@ end
 time_axis = (1:n_windows) * window_duration / 60; % en minutos
 
 figure;
-subplot(4,1,1);
+subplot(3,1,1);
 plot(time_axis, HF_power_series, '-o');
 xlabel('Tiempo (min)'); ylabel('Potencia HF');
 title('Actividad vagal (HF) por ventana de 1 minuto');
 grid on;
 
-subplot(4,1,2);
+subplot(3,1,2);
 plot(time_axis, LF_power_series, '-o');
 xlabel('Tiempo (min)'); ylabel('Potencia LF');
 title('Actividad de baja frecuencia (LF) por ventana de 1 minuto');
 grid on;
 
-subplot(4, 1, 3)
+subplot(3, 1, 3)
 plot(time_axis, LF_HF_ratio_series, '-o');
-xlabel('Tiempo (min)'); ylabel('Relación LF/HF');
-title('Relación Simpático/Parasimpático');
-grid on;
-
-subplot(4, 1, 4)
-plot(time/60, stim_reference, '-');
 xlabel('Tiempo (min)'); ylabel('Relación LF/HF');
 title('Relación Simpático/Parasimpático');
 grid on;
