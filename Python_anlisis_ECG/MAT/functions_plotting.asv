@@ -10,7 +10,7 @@ function functions_plotting(time, ECG, stimulation, locs_P, locs_Q, locs_R, locs
 %     plot_indicator(time, stimulation, ST, locs_S, label, 'ST', [0, 0.02])
 %     plot_indicator(time, stimulation, RT_voltage, locs_R, label, 'RT VOLTAGE', [-1, 1])
 %     plot_indicator(time, stimulation, RR, locs_R(1:end-1), label, 'RR', [0, 1])
-    plot_indicators_differenced(time, ECG, stimulation, locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, label)
+%     plot_indicators_differenced(time, ECG, stimulation, locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, label)
 %     plot_BPM(time, stimulation, time_intervals_bpm, BPM, label)º
 
 end
@@ -20,14 +20,12 @@ function plot_PRQRST(time, ECG, stimulation, locs_P, locs_Q, locs_R, locs_S, loc
         figure
         plot(time, stimulation, "Color",[0.4940 0.1840 0.5560])
         hold on
-        yyaxis right;        
         plot(time, ECG, "Color", [0 0.4470 0.7410])
         plot(time(locs_P), ECG(locs_P), 'mo')
         plot(time(locs_Q), ECG(locs_Q), 'ko')
         plot(time(locs_R), ECG(locs_R), 'ro')
         plot(time(locs_S), ECG(locs_S), 'go')
         plot(time(locs_T), ECG(locs_T), 'bo')
-        ylim([min(ECG)-0.2, max(ECG)+0.2])
         legend('Stimulation', 'ECG', 'P','Q','R','S','T');
         hold off
         title(label)
@@ -105,7 +103,7 @@ function plot_indicators_differenced(time, ECG, stimulation, locs_P, locs_Q, loc
     % Segundo eje Y (indicadores)
     yyaxis right;
     plot(time(locs_P), PR,  "Color", [0 0.4470 0.7410])
-    ylim([0, max(PR)+0.02])
+    ylim([0, 0.1])
     hold off
 
     title(label + ' PR ')
@@ -119,7 +117,7 @@ function plot_indicators_differenced(time, ECG, stimulation, locs_P, locs_Q, loc
     % Segundo eje Y (indicadores)
     yyaxis right;
     plot(time(locs_P), PS, "Color", [0 0.4470 0.7410])
-    ylim([0, max(PS)+0.02])
+    ylim([0, 0.1])
     hold off
 
     title(label + ' PS ')
@@ -132,7 +130,7 @@ function plot_indicators_differenced(time, ECG, stimulation, locs_P, locs_Q, loc
     % Segundo eje Y (indicadores)
     yyaxis right;
     plot(time(locs_R), RS, "Color", [0 0.4470 0.7410])
-    ylim([0, max(RS)+0.02])
+    ylim([0, 0.03])
     hold off
 
     title(label + ' RS ')
@@ -146,7 +144,7 @@ function plot_indicators_differenced(time, ECG, stimulation, locs_P, locs_Q, loc
     % Segundo eje Y (indicadores)
     yyaxis right;
     plot(time(locs_R), RT, "Color", [0 0.4470 0.7410])
-    ylim([0, max(RT)+0.02])
+    ylim([0, 0.03])
     hold off
 
     title(label + ' RT ')
@@ -165,7 +163,7 @@ function plot_indicators_differenced(time, ECG, stimulation, locs_P, locs_Q, loc
     % Segundo eje Y (indicadores)
     yyaxis right;
     plot(time(locs_Q), QRS, "Color", [0 0.4470 0.7410])
-    ylim([0, max(QRS)+0.02])
+    ylim([0, 0.06])
     hold off
 
     title(label + ' QRS ')
@@ -179,7 +177,7 @@ function plot_indicators_differenced(time, ECG, stimulation, locs_P, locs_Q, loc
     % Segundo eje Y (indicadores)
     yyaxis right;
     plot(time(locs_Q), QT, "Color", [0 0.4470 0.7410])
-    ylim([0, max(QT)+0.02])
+    ylim([0, 0.06])
     hold off
 
     title(label + ' QT ')
@@ -193,7 +191,7 @@ function plot_indicators_differenced(time, ECG, stimulation, locs_P, locs_Q, loc
     % Segundo eje Y (indicadores)
     yyaxis right;
     plot(time(locs_S), ST, "Color", [0 0.4470 0.7410])
-    ylim([0, max(ST)+0.02])
+    ylim([0, 0.06])
     hold off
 
     title(label + ' ST ')
