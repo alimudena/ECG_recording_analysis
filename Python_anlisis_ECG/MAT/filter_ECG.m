@@ -3,7 +3,7 @@ function ECG = filter_ECG(ECG, fs)
     %highpass(ECG,0.159,fs);
 
     %filtrado paso bajo equivalente al analogico
-    f0 = 70; % Frecuencia de corte (Hz)
+    f0 = 50; % Frecuencia de corte (Hz)
     w0 = 2 * pi * f0; % Frecuencia angular
     
     % Q de cada etapa
