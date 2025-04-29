@@ -1,6 +1,6 @@
-function functions_plotting(time, ECG, stimulation, locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, label)
-    plot_PRQRST(time, ECG, stimulation, locs_P, locs_Q, locs_R, locs_S, locs_T, label);
-%     plot_indicators(time, stimulation, PR, PS, RS, RT, QRS, QT, ST, locs_P, locs_Q, locs_R, locs_S, locs_T, label);
+function functions_plotting(time, ECG, stimulation, locs_P, locs_Q, locs_R, locs_S, locs_T, locs_Q_init, locs_Q_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, label)
+     plot_PRQRST(time, ECG, stimulation, locs_P, locs_Q, locs_R, locs_S, locs_T, label);
+    % plot_indicators(time, stimulation, PR, PS, RS, RT, QRS, QT, ST, locs_P, locs_Q, locs_R, locs_S, locs_T, label);
 %     plot_indicator(time, stimulation, PR, locs_P, label, 'PR', [0, 0.1])
 %     plot_indicator(time, stimulation, PS, locs_P, label, 'PS', [0, 0.1])
 %     plot_indicator(time, stimulation, RS, locs_R, label, 'RS', [0, 0.02])
@@ -10,8 +10,11 @@ function functions_plotting(time, ECG, stimulation, locs_P, locs_Q, locs_R, locs
 %     plot_indicator(time, stimulation, ST, locs_S, label, 'ST', [0, 0.02])
 %     plot_indicator(time, stimulation, RT_voltage, locs_R, label, 'RT VOLTAGE', [-1, 1])
 %     plot_indicator(time, stimulation, RR, locs_R(1:end-1), label, 'RR', [0, 1])
-    plot_indicators_differenced(time, ECG, stimulation, locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, label)
-%     plot_BPM(time, stimulation, time_intervals_bpm, BPM, label)º
+     % plot_indicators_differenced(time, ECG, stimulation, locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, label)
+     % plot_BPM(time, stimulation, time_intervals_bpm, BPM, label)
+     plot_P(time, locs_P, locs_P_init, locs_P_end, ECG)
+     plot_T(time, locs_Q, locs_Q_init, locs_Q_end, ECG)
+
 
 end
 
@@ -210,6 +213,41 @@ function plot_indicators_differenced(time, ECG, stimulation, locs_P, locs_Q, loc
     title(label + ' RT voltage ')
 
 end
+
+
+%% function for plotting the P and Q indicated separately
+function plot_P(time, locs_P, locs_P_init, locs_P_end, ECG)
+    figure
+    plot(time, ECG)
+    hold on
+
+    % Segundo eje Y (indicadores)
+    plot(time(locs_P), ECG(locs_P), 'o')
+    plot(time(locs_P_init), ECG(locs_P_init), '*')
+    plot(time(locs_P_end), ECG(locs_P_end), '.')
+    hold off
+
+    title('P wave ')
+    legend('ECG', 'P center', 'P init', 'P end')
+end
+
+function plot_T(time, locs_T, locs_T_init, locs_T_end, ECG)
+    figure
+    plot(time, ECG)
+    hold on
+
+    % Segundo eje Y (indicadores)
+    plot(time(locs_T), ECG(locs_T), 'o')
+    plot(time(locs_T_init), ECG(locs_T_init), '*')
+    plot(time(locs_T_end), ECG(locs_T_end), '.')
+    hold off
+
+
+    title('T wave')
+    legend('ECG', 'T center', 'T init', 'T end')
+end
+
+
 %% Functions for each indicator with its own parameters
 % %% function for plotting indicator PR
 % function plot_indicator_PR(time, stimulation, PR, locs_P, label)

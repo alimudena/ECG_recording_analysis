@@ -1,7 +1,10 @@
-function [locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, label)
+function [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_Q_init, locs_Q_end, locs_T_init, locs_T_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, label)
     locs_R = R_extract(ECG, th, fs);
     [locs_Q, locs_S] = QS_extract(fs, locs_R, ECG);
     [locs_P, locs_T] = PT_extract(fs, locs_R, locs_Q, locs_S, ECG);
+    
+    [locs_Q_init, locs_Q_end] = T_characterizing(fs, locs_Q, ECG);
+    [locs_T_init, locs_T_end] = P_characterizing(fs, locs_T, ECG);
     
     
  %   plot_PRQRST(ECG, locs_P, locs_Q, locs_R, locs_S, locs_T, label);
@@ -16,6 +19,8 @@ function [locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, R
     ST = ST_segment(locs_S, locs_T, fs); %Indicador de isquemia o estres
     RT_voltage = RT_voltage_difference(ECG, locs_R, locs_T);
     RR = R_period_calculation(locs_R, fs);
+
+
 
 end
 
@@ -51,7 +56,7 @@ end
 
 function [locs_Q, locs_S] = QS_extract(fs, locs_R, ECG)
     ECG = double(ECG);
-    window = round(0.02 * fs); % 20ms
+    window = round(0.02 * fs);
     
     locs_Q = zeros(size(locs_R));
     locs_S = zeros(size(locs_R));
@@ -78,15 +83,67 @@ function  [locs_P, locs_T] = PT_extract(fs, locs_R, locs_Q, locs_S, ECG)
         q = locs_Q(i);
         s = locs_S(i);
         
-        % P: pico antes de Q (en una ventana de 40-60ms)
-        win_p = round(0.03*fs); 
+        % P: pico antes de Q
+        win_p = round(0.08*fs); 
         [~, idx_p] = max(ECG(max(1, q - win_p):q));
         locs_P(i) = max(1, q - win_p) + idx_p - 1;
         
-        % T: pico después de S (ventana de 60-100ms)
+        % T: pico después de S 
         win_t = round(0.08*fs);
         [~, idx_t] = max(ECG(s:min(length(ECG), s + win_t)));
         locs_T(i) = s + idx_t - 1;
+    end
+end
+
+function [locs_P_init, locs_P_end] = P_characterizing(fs, locs_P, ECG)
+    ECG = double(ECG);
+    locs_P_init = zeros(size(locs_P));
+    locs_P_end = zeros(size(locs_P));
+    
+    win = round(0.025 * fs); % 40 ms antes y después del pico P
+    
+    for i = 1:length(locs_P)
+        p = locs_P(i);
+    
+        % Buscar inicio (antes del pico)
+        search_start = max(1, p - win);
+        segment = ECG(search_start:p);
+        diff_seg = diff(segment);
+        [~, min_idx] = min(abs(diff_seg)); % mínimo cambio: posible inicio
+        locs_P_init(i) = search_start + min_idx - 1;
+    
+        % Buscar fin (después del pico)
+        search_end = min(length(ECG), p + win);
+        segment = ECG(p:search_end);
+        diff_seg = diff(segment);
+        [~, min_idx] = min(abs(diff_seg)); % mínimo cambio: posible final
+        locs_P_end(i) = p + min_idx - 1;
+    end
+end
+
+function [locs_T_init, locs_T_end] = T_characterizing(fs, locs_T, ECG)
+    ECG = double(ECG);
+    locs_T_init = zeros(size(locs_T));
+    locs_T_end = zeros(size(locs_T));
+
+    win = round(0.08 * fs); % 80 ms antes y después del pico T
+
+    for i = 1:length(locs_T)
+        q = locs_T(i);
+
+        % Buscar inicio (antes del pico Q)
+        search_start = max(1, q - win);
+        segment = ECG(search_start:q);
+        diff_seg = diff(segment);
+        [~, min_idx] = min(abs(diff_seg)); % mínimo cambio
+        locs_T_init(i) = search_start + min_idx - 1;
+
+        % Buscar fin (después del pico Q hasta R)
+        search_end = min(length(ECG), q + win);
+        segment = ECG(q:search_end);
+        diff_seg = diff(segment);
+        [~, min_idx] = min(abs(diff_seg));
+        locs_T_end(i) = q + min_idx - 1;
     end
 end
 
@@ -127,6 +184,7 @@ end
 function ST = ST_segment(locs_S, locs_T, fs) %Indicador de isquemia o estres
     ST = (locs_T - locs_S) / fs;
 end
+
 %%
 % function plot_PRQRST(ECG, locs_P, locs_Q, locs_R, locs_S, locs_T, label)
 %     plot(ECG); hold on;
