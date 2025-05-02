@@ -3,8 +3,12 @@ function [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_Q_init, locs_Q_end, locs_
     [locs_Q, locs_S] = QS_extract(fs, locs_R, ECG);
     [locs_P, locs_T] = PT_extract(fs, locs_R, locs_Q, locs_S, ECG);
     
-    [locs_Q_init, locs_Q_end] = T_characterizing(fs, locs_Q, ECG);
-    [locs_T_init, locs_T_end] = P_characterizing(fs, locs_T, ECG);
+    % [locs_Q_init, locs_Q_end] = T_characterizing(fs, locs_Q, ECG);
+    % [locs_T_init, locs_T_end] = P_characterizing(fs, locs_T, ECG);
+    locs_Q_init = 0;
+    locs_Q_end = 0;
+    locs_T_init = 0;
+    locs_T_end = 0;
     
     
  %   plot_PRQRST(ECG, locs_P, locs_Q, locs_R, locs_S, locs_T, label);
