@@ -1,0 +1,398 @@
+%%
+clc
+clear
+close all
+
+%%
+EXP_sel = 3.2;
+RODENT_sel = 5;
+
+if EXP_sel == 1
+    folder = "EXP001";
+    threshold = 0.25;
+
+elseif EXP_sel == 2
+    folder = "EXP002";
+    if RODENT_sel == 1
+        file = "raton1_est_anestesia.mat";
+        threshold = 0.6;
+        t_init = 520000;
+        t_end = 38298341;
+    elseif RODENT_sel == 2
+        file = "raton2_no_est_anestesia.mat";
+    end
+elseif EXP_sel == 3.1
+    folder = "EXP003/inhalada";
+    if RODENT_sel == 1
+        file = "RATON1-AN+EST.mat";
+        threshold = 0.4;
+        t_init = 520000;
+        t_end = 38298341;
+    
+    elseif RODENT_sel == 2
+        file = "RATON2-EST-AN.mat";
+        threshold = 0.5;
+
+        t_init = 520000;
+        t_end = 38298341;
+    
+    elseif RODENT_sel == 3
+        file = "RATON3-EST-AN.mat";
+        threshold = 0.6;
+        t_init = 520000;
+        t_end = 38298341;
+
+    elseif RODENT_sel == 4
+        file = "RATON4-CONTROL-FALSAEST-AN.mat";
+        threshold = 0.6;
+        t_init = 520000;
+        t_end = 38298341;
+
+    elseif RODENT_sel == 5
+        file = "RATON5-CONTROL-AN-FALSAEST.mat";
+        threshold = 0.6;
+        t_init = 520000;
+        t_end = 38298341;
+
+    end
+elseif EXP_sel == 3.2
+    folder = "EXP003/no_inhalada";
+    if RODENT_sel == 1
+        file = "RATON1-30+EST.mat";
+        threshold = 0.6;
+        t_init = 520000;
+        t_end = 38298341;
+    elseif RODENT_sel == 2
+        file = "RATON2-EST+30.mat";
+        threshold = 0.6;
+        t_init = 520000;
+        t_end = 38298341;
+    elseif RODENT_sel == 3
+        file = 'RATON3-EST+15 (1PARTE).mat';
+        threshold = 0.6;
+        t_init = 520000;
+        t_end = 38298341;        
+    elseif RODENT_sel == 4
+    file = 'RATON3-POST EST-(2PARTE).mat';
+    threshold = 0.6;
+    t_init = 520000;
+    t_end = 38298341;
+
+    elseif RODENT_sel == 5
+    file = 'RATON4-30+EST.mat';
+    threshold = 0.6;
+    t_init = 520000;
+    t_end = 38298341;
+    
+    
+    end
+elseif EXP_sel == 4
+    folder = "EXP004";
+    if RODENT_sel == 1
+        file = "RATON1_30AN_30EST_30AN.mat";
+        threshold = 0.6;
+        t_init = 520000;
+        t_end = 38298341;
+    elseif RODENT_sel == 2
+        file = "RATON2_30AN_30EST_15AN.mat";
+        threshold = 0.6;
+        t_init = 520000;
+        t_end = 38298341;
+    elseif RODENT_sel == 3
+        file = 'RATON3_EST_40AN.mat';
+        threshold = 0.6;
+        t_init = 520000;
+        t_end = 38298341; 
+
+    elseif RODENT_sel == 4
+        file = 'RATON4_EST_40AN.mat';
+        threshold = 0.6;
+        t_init = 520000;
+        t_end = 38298341;
+
+    elseif RODENT_sel == 5
+        file = 'RATON5_CONTROL_FALSAEST_40AN.mat';
+        threshold = 0.6;
+        t_init = 520000;
+        t_end = 38298341;
+
+    end
+end
+%%
+file_name = append(folder, "/", file);
+data = load(file_name);
+[ECG, stim_reference, d3, fs, time] = extract_data(data);
+
+%% SOLO SI QUEREMOS UN TROCITO
+time = time(t_init: t_end);
+ECG = ECG(t_init: t_end);
+stim_reference = stim_reference(t_init: t_end);
+%% Signal filtered only in stim times
+ecg_signal = double(ECG(:)); 
+over = stim_reference>1;
+senal = over;
+
+tramo = 20000; 
+
+N = length(senal);
+senal_filtrada = over; % Copia de la señal original
+
+for i = 1:tramo:N
+    fin_tramo = min(i + tramo - 1, N); % Asegurar que no exceda el tamaño de la señal
+    segmento = senal(i:fin_tramo);
+    
+    % Determinar el valor predominante en el tramo
+%    if sum(segmento) >= length(segmento) / 2
+     if sum(segmento) >= 1
+        valor_predominante = 1;
+    else
+        valor_predominante = 0;
+    end
+    
+    % Asignar el valor predominante a todo el tramo
+    senal_filtrada(i:fin_tramo) = valor_predominante;
+end
+
+ecg_signal = ecg_signal.*~senal_filtrada;
+
+%% 
+
+% 1. Preprocessing - Filtering the Signal
+% High-pass filter to remove baseline wander (0.5 Hz)
+hpFilt = designfilt('highpassiir','FilterOrder',4, ...
+    'HalfPowerFrequency',0.5,'SampleRate',fs);
+ecg_hp = filtfilt(hpFilt, ecg_signal);
+
+
+
+% Low-pass filter to remove high-frequency noise (250 Hz)
+lpFilt = designfilt('lowpassiir','FilterOrder',4, ...
+    'HalfPowerFrequency',250,'SampleRate',fs);
+ecg_filt = filtfilt(lpFilt, ecg_hp);
+
+
+% 2. R-Peak Detection (Using Pan-Tompkins or findpeaks)
+% [~, R_locs] = findpeaks(ecg_filt, 'MinPeakHeight', threshold, ...
+%     'MinPeakDistance', fs*0.05); % 50ms min distance between beats
+[pks, locs] = findpeaks(ecg_filt,'MinPeakHeight', threshold);
+
+% 2️ Inicializar lista de picos R detectados
+R_locs = [];
+
+% 3️ Recorrer los picos detectados y tomar el primero de cada par R-T
+i = 1;
+while i < length(locs)
+    if i < length(locs) && (locs(i+1) - locs(i)) < fs * 0.2  % Máximo 200ms entre picos contiguos
+        R_locs = [R_locs; locs(i)];  % Seleccionamos siempre el primero del par
+        i = i + 2;  % Saltamos al siguiente ciclo (ignoramos el pico T)
+    else
+        R_locs = [R_locs; locs(i)];
+        i = i + 1;
+    end
+end
+
+%% 
+% 
+% green = [38/255, 38/255, 38/255];
+% lineColor = [121/255, 202/255, 39/255]; % Color de las líneas (#79ca27)
+% 
+
+figure;
+plot(time, ecg_filt)
+hold on
+plot(time(R_locs), ecg_filt(R_locs), 'o')
+plot(time(locs), ecg_filt(locs), '*')
+% title("ECG", "Color", [1, 1, 1])
+%xlim([2680, 2690])
+
+hold off
+
+% ax = gca;
+% set(ax, 'Color', green); % Cambiar el color de fondo del subplot
+% ax.XColor = [1, 1, 1]; % Cambiar color de los ejes a blanco
+% ax.YColor = [1, 1, 1]; % Cambiar color de los ejes a blanco
+% % Cambiar el color de fondo de la figura
+% set(gcf, 'Color', green);
+
+%% 
+figure;
+plot(ecg_filt)
+
+hold on
+plot(R_locs, ecg_filt(R_locs), 'o')
+hold off
+
+%% 3. Identify P and Q Waves
+clc
+P_locs = []; % Store P-wave locations
+Q_locs = []; % Store Q-wave locations
+P_Q_diff = []; % Store P-Q amplitude differences
+P_Q_time = []; % Store P-Q time differences
+Q_R_time = []; % Store Q-R time differences
+P_R_time = []; % Store P-R time differences
+P_P_time = [];
+R_prev = 0;
+
+for i = 1:length(R_locs)
+    % Define search windows relative to R-peak
+    final = R_locs(i) - round(0.02*fs);
+    if final< 0 
+        final = 1;
+
+    end 
+
+    search_window_P = max(R_locs(i) - round(0.1*fs), 1) : final;
+    search_window_Q = final : R_locs(i) - round(0.005*fs);
+    
+    % Find P-wave (Max peak in window)
+    [P_val, P_idx] = max(ecg_filt(search_window_P));
+    P_locs(i) = search_window_P(1) + P_idx - 1;
+    
+    % Find Q-wave (Min peak in window)
+    [Q_val, Q_idx] = min(ecg_filt(search_window_Q));
+    Q_locs(i) = search_window_Q(1) + Q_idx - 1;
+    
+    % Compute P-Q amplitude difference
+    P_Q_diff(i) = P_val - Q_val;
+    
+    % Compute time differences
+    T_P = time(P_locs(i));
+    T_Q = time(Q_locs(i));
+    T_R = time(R_locs(i));
+
+    P_Q_time(i) = T_Q - T_P; % P-Q interval
+    Q_R_time(i) = T_R - T_Q; % Q-R interval
+    P_R_time(i) = T_R - T_P; % P-R interval
+    R_R_time(i) = T_R - R_prev;
+    
+    R_prev = T_R;
+
+end
+%%
+save(file, "P_P_time", "P_R_time", "P_Q_time", "Q_R_time", "R_R_time", "P_locs", "Q_locs", "R_locs", "ecg_signal", "stim_reference", "ecg_filt", "time", "ECG" )
+
+%% 4. Plot Results of all signals and time differences
+figure;
+ax1 = subplot(3,1,1);
+plot(time, ecg_signal);
+title('Raw ECG Signal'); xlabel('Time (s)'); ylabel('Amplitude');
+
+ax2 = subplot(3,1,2);
+plot(time, ecg_filt);
+hold on;
+plot(time(R_locs), ecg_filt(R_locs), 'ro', 'MarkerSize', 8, 'LineWidth', 0.5); % R-peaks
+plot(time(P_locs), ecg_filt(P_locs), 'go', 'MarkerSize', 8, 'LineWidth', 0.5); % P-waves
+plot(time(Q_locs), ecg_filt(Q_locs), 'bo', 'MarkerSize', 8, 'LineWidth', 0.5); % Q-waves
+title('Filtered ECG with Detected P, Q, and R Waves');
+xlabel('Time (s)'); ylabel('Amplitude');
+legend('ECG', 'R-Peak', 'P-Wave', 'Q-Wave');
+
+ax3 = subplot(3,1,3);
+plot(P_Q_time, '-', 'LineWidth', 0.5);
+hold on;
+plot(Q_R_time, '-', 'LineWidth', 0.5);
+plot(P_R_time, '-', 'LineWidth', 0.5);
+plot(R_R_time, '-', 'LineWidth', 0.5);
+legend('P-Q Interval', 'Q-R Interval', 'P-R Interval', 'R-R Interval');
+title('Temporal Differences Between P, Q, and R Waves');
+xlabel('Beat Number'); ylabel('Time (s)');
+ylim([0, 1])
+
+sgtitle(file_name);
+
+%linkaxes([ax1, ax2, ax3], 'x');
+
+
+% subplot(4,1,4);
+% plot(P_Q_diff, '-o');
+% title('P-Q Amplitude Difference Over Time');
+% xlabel('Beat Number'); ylabel('Amplitude Difference');
+%%
+figure
+plot(R_R_time, '-', 'LineWidth', 0.5);
+title('R-R interval')
+xlabel('Beat Number'); ylabel('Time (s)');
+ylim([0.1, 1])
+%%
+figure
+plot(time, ecg_filt);
+hold on;
+plot(time(R_locs), ecg_filt(R_locs), 'ro', 'MarkerSize', 8, 'LineWidth', 0.5); % R-peaks
+plot(time(P_locs), ecg_filt(P_locs), 'go', 'MarkerSize', 8, 'LineWidth', 0.5); % P-waves
+plot(time(Q_locs), ecg_filt(Q_locs), 'bo', 'MarkerSize', 8, 'LineWidth', 0.5); % Q-waves
+title(file_name, 'Filtered ECG with Detected P, Q, and R Waves');
+xlabel('Time (s)'); ylabel('Amplitude');
+legend('ECG', 'R-Peak', 'P-Wave', 'Q-Wave');
+ylim([-1, 1])
+hold off
+%% Plot only the timing differences
+figure;
+subplot(5, 1, 1);
+plot(time, ecg_filt);
+hold on;
+plot(time(R_locs), ecg_filt(R_locs), 'ro', 'MarkerSize', 8, 'LineWidth', 0.5); % R-peaks
+plot(time(P_locs), ecg_filt(P_locs), 'go', 'MarkerSize', 8, 'LineWidth', 0.5); % P-waves
+plot(time(Q_locs), ecg_filt(Q_locs), 'bo', 'MarkerSize', 8, 'LineWidth', 0.5); % Q-waves
+title('Filtered ECG with Detected P, Q, and R Waves');
+xlabel('Time (s)'); ylabel('Amplitude');
+legend('ECG', 'R-Peak', 'P-Wave', 'Q-Wave');
+ylim([-1, 1])
+hold off
+
+subplot(5, 1, 2);
+plot(P_Q_time, '-', 'LineWidth', 1.5);
+title('P-Q Interval');
+xlabel('Beat Number'); ylabel('Time (s)');
+
+subplot(5, 1, 3);
+plot(Q_R_time, '-', 'LineWidth', 1.5);
+title('Q-R Interval');
+xlabel('Beat Number'); ylabel('Time (s)');
+ylim([0, 0.1])
+
+subplot(5, 1, 4);
+plot(P_R_time, '-', 'LineWidth', 1.5);
+title('P-R interval')
+xlabel('Beat Number'); ylabel('Time (s)');
+
+subplot(5, 1, 5);
+plot(R_R_time, '-', 'LineWidth', 1.5);
+title('R-R interval')
+xlabel('Beat Number'); ylabel('Time (s)');
+ylim([0.1, 0.4])
+
+sgtitle(file_name);
+
+
+
+%% 4. Plot Results
+% figure;
+% ax1 = subplot(3,1,1);
+% plot(ecg_signal);
+% title('Raw ECG Signal'); xlabel('Time (s)'); ylabel('Amplitude');
+% 
+% ax2 = subplot(3,1,2);
+% plot(ecg_filt);
+% hold on;
+% plot(ecg_filt(R_locs), 'ro', 'MarkerSize', 8, 'LineWidth', 1.5); % R-peaks
+% plot(ecg_filt(P_locs), 'go', 'MarkerSize', 8, 'LineWidth', 1.5); % P-waves
+% plot(ecg_filt(Q_locs), 'bo', 'MarkerSize', 8, 'LineWidth', 1.5); % Q-waves
+% title('Filtered ECG with Detected P, Q, and R Waves');
+% xlabel('Time (s)'); ylabel('Amplitude');
+% legend('ECG', 'R-Peak', 'P-Wave', 'Q-Wave');
+% 
+% ax3 = subplot(3,1,3);
+% plot(P_Q_time, '-o', 'LineWidth', 1.5);
+% hold on;
+% plot(Q_R_time, '-s', 'LineWidth', 1.5);
+% plot(P_R_time, '-d', 'LineWidth', 1.5);
+% legend('P-Q Interval', 'Q-R Interval', 'P-R Interval');
+% title('Temporal Differences Between P, Q, and R Waves');
+% xlabel('Beat Number'); ylabel('Time (s)');
+% 
+% % linkaxes([ax1, ax2, ax3], 'x');
+
+%% 5. Display Mean Time Intervals
+disp(['Mean P-Q Interval: ', num2str(mean(P_Q_time)), ' s']);
+disp(['Mean Q-R Interval: ', num2str(mean(Q_R_time)), ' s']);
+disp(['Mean P-R Interval: ', num2str(mean(P_R_time)), ' s']);
