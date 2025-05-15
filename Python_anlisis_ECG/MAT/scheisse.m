@@ -1,5 +1,20 @@
 clc
 clear
+% Definir las variables
+folder = '02_CTB_setup_experiments/';
+exact_name = 'EXP005';
+file_name = 'raton0_control_anestesia';
+
+% Crear el comando para ejecutar el script Python con las variables
+comando = sprintf(['python convert_to_matlab.py "%s" "%s"'], folder, file_name);
+
+% Ejecutar el comando en la terminal
+system(comando);
+
+
+%%
+clc
+clear
 close all
 use_filter = 1;
 
@@ -7,7 +22,7 @@ EXP_folder = "EXP004/";
 fs_interp = 4; % Hz, frecuencia de interpolación
 
 %%%%%%%%%%%%%%%%%%%%%%%%% R1
-data = load(EXP_folder+'RATON1_30AN_30EST_30AN.mat');
+data = load(EXP_folder+"RATON1_30AN_30EST_30AN.mat");
 [ECG, stim_reference, d3, fs, time] = extract_data(data);
 
 if (use_filter == 1)
@@ -45,7 +60,7 @@ BPM_1                       = BPM;
 %% analisis de HRV en ventanas espaciadas en el tiempo
 t_interp = linspace(0, sum(RR), length(RR));
 tq = 0:1/fs_interp:t_interp(end);
-RR_interp = interp1(t_interp, RR, tq, 'spline');
+RR_interp = interp1(t_interp, RR, tq, "spline");
 
 % Asumiendo RR y fs_interp definidos
 window_duration = 60; % segundos
@@ -66,8 +81,8 @@ for i = 1:n_windows
     
     [pxx, f] = pwelch(segment, [], [], [], fs_interp);
     pxx_multiple(i, :) = pxx;
-    LF = bandpower(pxx, f, [0.15 1.5], 'psd');
-    HF = bandpower(pxx, f, [2 10], 'psd');
+    LF = bandpower(pxx, f, [0.15 1.5], "psd");
+    HF = bandpower(pxx, f, [2 10], "psd");
     
     HF_power_series(i) = HF;
     LF_power_series(i) = LF;
@@ -78,27 +93,27 @@ time_axis = (1:n_windows) * window_duration / 60; % en minutos
 
 figure;
 subplot(4,1,1);
-plot(time_axis, HF_power_series, '-o');
-xlabel('Tiempo (min)'); ylabel('Potencia HF');
-title('Actividad vagal (HF) por ventana de 1 minuto');
+plot(time_axis, HF_power_series, "-o");
+xlabel("Tiempo (min)"); ylabel("Potencia HF");
+title("Actividad vagal (HF) por ventana de 1 minuto");
 grid on;
 
 subplot(4,1,2);
-plot(time_axis, LF_power_series, '-o');
-xlabel('Tiempo (min)'); ylabel('Potencia LF');
-title('Actividad de baja frecuencia (LF) por ventana de 1 minuto');
+plot(time_axis, LF_power_series, "-o");
+xlabel("Tiempo (min)"); ylabel("Potencia LF");
+title("Actividad de baja frecuencia (LF) por ventana de 1 minuto");
 grid on;
 
 subplot(4, 1, 3)
-plot(time_axis, LF_HF_ratio_series, '-o');
-xlabel('Tiempo (min)'); ylabel('Relación LF/HF');
-title('Relación Simpático/Parasimpático');
+plot(time_axis, LF_HF_ratio_series, "-o");
+xlabel("Tiempo (min)"); ylabel("Relación LF/HF");
+title("Relación Simpático/Parasimpático");
 grid on;
 
 subplot(4, 1, 4)
-plot(time/60, stim_reference, '-');
-xlabel('Tiempo (min)'); ylabel('Relación LF/HF');
-title('Relación Simpático/Parasimpático');
+plot(time/60, stim_reference, "-");
+xlabel("Tiempo (min)"); ylabel("Relación LF/HF");
+title("Relación Simpático/Parasimpático");
 grid on;
 
 
