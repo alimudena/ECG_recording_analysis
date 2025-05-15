@@ -1,11 +1,11 @@
 clc
 clear
 close all
-EXP = 4;
+EXP = 5;
 
 fs = 10000;
 Ts = 1/fs;
-use_filter = 1;
+use_filter = 0;
 PLOT_ECGS = 0;
 SUBPLOTTED = 0;
 
@@ -25,7 +25,7 @@ if EXP == 2
     
     [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
     [time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 50, fs, ECG, locs_R);
-    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
+    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
   
     leg_1                       = leg;
     time_1                      = time;
@@ -56,7 +56,7 @@ if EXP == 2
 
     [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
     [time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 50, fs, ECG, locs_R);
-    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
+    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
     
     leg_2                       = leg;
     time_2                      = time;
@@ -93,7 +93,7 @@ elseif EXP == 3
     
     [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
     [time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 50, fs, ECG, locs_R);
-    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
+    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
     
     leg_1                       = leg;
     time_1                      = time;
@@ -129,7 +129,7 @@ elseif EXP == 3
 
     [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
     [time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 50, fs, ECG, locs_R);
-    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
+    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
     
     leg_2                       = leg;
     time_2                      = time;
@@ -164,7 +164,7 @@ elseif EXP == 3
 
     [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
     [time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 50, fs, ECG, locs_R);
-    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
+    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
     
     leg_3                       = leg;
     time_3                      = time;
@@ -198,7 +198,7 @@ elseif EXP == 3
 
     [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
     [time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 50, fs, ECG, locs_R);
-    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
+    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
     
     leg_4                       = leg;
     time_4                      = time;
@@ -232,7 +232,7 @@ elseif EXP == 3
 
     [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
     [time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 50, fs, ECG, locs_R);
-    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
+    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
     
     leg_5                       = leg;
     time_5                      = time;
@@ -269,7 +269,7 @@ elseif EXP == 3.2
 
     [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
     [time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 50, fs, ECG, locs_R);
-    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
+    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
     
     leg_1                       = leg;
     time_1                      = time;
@@ -304,7 +304,7 @@ elseif EXP == 3.2
 
     [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
     [time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 50, fs, ECG, locs_R);
-    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
+    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
     
     leg_2                       = leg;
     time_2                      = time;
@@ -383,7 +383,7 @@ elseif EXP == 4
     
     [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
     [time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 50, fs, ECG, locs_R);
-    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
+    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
     
     leg_1                       = leg;
     time_1                      = time;
@@ -419,7 +419,7 @@ elseif EXP == 4
     
     [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
     [time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 50, fs, ECG, locs_R);
-    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
+    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
     
     leg_2                       = leg;
     time_2                      = time;
@@ -454,7 +454,7 @@ elseif EXP == 4
 
     [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
     [time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 50, fs, ECG, locs_R);
-    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
+    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
     
     leg_3                       = leg;
     time_3                      = time;
@@ -489,7 +489,7 @@ elseif EXP == 4
 
     [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
     [time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 50, fs, ECG, locs_R);
-    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
+    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
     
     leg_4                       = leg;
     time_4                      = time;
@@ -527,7 +527,7 @@ elseif EXP == 4
 
     [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
     [time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 50, fs, ECG, locs_R);
-    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
+    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
     
     leg_5                       = leg;
     time_5                      = time;
@@ -563,7 +563,7 @@ elseif EXP == 4
 
     [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
     [time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 50, fs, ECG, locs_R);
-    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
+    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
     
     leg_6                       = leg;
     time_6                      = time;
@@ -584,6 +584,186 @@ elseif EXP == 4
     RT_voltage_6                = RT_voltage;
     time_intervals_bpm_6        = time_intervals_bpm;
     BPM_6                       = BPM;
+
+elseif EXP == 5
+    EXP_folder = "EXP005/";
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%% R1
+    data = load(EXP_folder+'raton1_est_40minAN.mat');
+    [ECG, stim_reference, ~, fs, time] = extract_data(data);
+    leg                       = "RATON1_est_40minAN - EXP005";
+    th = 0.6;
+    % if (use_filter == 1)
+    %     ECG = filter_ECG(ECG, fs);
+    % end
+    
+    [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
+    [time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 50, fs, ECG, locs_R);
+    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
+    
+    leg_1                       = leg;
+    time_1                      = time;
+    stim_ref_1                  = stim_reference;
+    ECG_1                       = ECG;
+    locs_P_1                    = locs_P;
+    locs_Q_1                    = locs_Q;
+    locs_R_1                    = locs_R;
+    locs_S_1                    = locs_S;
+    locs_T_1                    = locs_T;
+    PR_1                        = PR;
+    PS_1                        = PS;
+    RS_1                        = RS;
+    RT_1                        = RT;
+    QRS_1                       = QRS;
+    QT_1                        = QT;
+    ST_1                        = ST;
+    RT_voltage_1                = RT_voltage;
+    time_intervals_bpm_1        = time_intervals_bpm;
+    BPM_1                       = BPM;
+
+
+    %%%%%%%%%%%%%%%%%%%%%%%%% R2
+    data = load(EXP_folder+'raton2_30minAN_est.mat');
+    [ECG, stim_reference, ~, fs, time] = extract_data(data);  
+    leg                      = "RATON2_30minAN_est - EXP005";
+    th = 0.1;
+
+    if (use_filter == 1)
+        ECG = filter_ECG(ECG, fs);
+    end
+
+    
+    [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
+    [time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 50, fs, ECG, locs_R);
+    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
+    
+    leg_2                       = leg;
+    time_2                      = time;
+    stim_ref_2                  = stim_reference;
+    ECG_2                       = ECG;
+    locs_P_2                    = locs_P;
+    locs_Q_2                    = locs_Q;
+    locs_R_2                    = locs_R;
+    locs_S_2                    = locs_S;
+    locs_T_2                    = locs_T;
+    PR_2                        = PR;
+    PS_2                        = PS;
+    RS_2                        = RS;
+    RT_2                        = RT;
+    QRS_2                       = QRS;
+    QT_2                        = QT;
+    ST_2                        = ST;
+    RT_voltage_2                = RT_voltage;
+    time_intervals_bpm_2        = time_intervals_bpm;
+    BPM_2                       = BPM;
+
+
+    %%%%%%%%%%%%%%%%%%%%%%%%% R3
+    data = load(EXP_folder+'raton3_falsa_est_40minAN.mat');
+    [ECG, stim_reference, ~, fs, time] = extract_data(data);
+    leg                      = "RATON3_falsa_est_40minAN - EXP005";
+    th = 0.6;
+
+    if (use_filter == 1)
+        ECG = filter_ECG(ECG, fs);
+    end
+
+    [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
+    [time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 50, fs, ECG, locs_R);
+    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
+    
+    leg_3                       = leg;
+    time_3                      = time;
+    stim_ref_3                  = stim_reference;
+    ECG_3                       = ECG;
+    locs_P_3                    = locs_P;
+    locs_Q_3                    = locs_Q;
+    locs_R_3                    = locs_R;
+    locs_S_3                    = locs_S;
+    locs_T_3                    = locs_T;
+    PR_3                        = PR;
+    PS_3                        = PS;
+    RS_3                        = RS;
+    RT_3                        = RT;
+    QRS_3                       = QRS;
+    QT_3                        = QT;
+    ST_3                        = ST;
+    RT_voltage_3                = RT_voltage;
+    time_intervals_bpm_3        = time_intervals_bpm;
+    BPM_3                       = BPM;
+
+
+    %%%%%%%%%%%%%%%%%%%%%%%%% R4
+    data = load(EXP_folder+'RATON4_EST_40AN.mat');
+    [ECG, stim_reference, ~, fs, time] = extract_data(data);
+    leg                      = "R4-EST-40AN - EXP004";
+    th = 0.1;
+
+    if (use_filter == 1)
+        ECG = filter_ECG(ECG, fs);
+    end
+
+    [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
+    [time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 50, fs, ECG, locs_R);
+    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
+    
+    leg_4                       = leg;
+    time_4                      = time;
+    stim_ref_4                  = stim_reference;
+    ECG_4                       = ECG;
+    locs_P_4                    = locs_P;
+    locs_Q_4                    = locs_Q;
+    locs_R_4                    = locs_R;
+    locs_S_4                    = locs_S;
+    locs_T_4                    = locs_T;
+    PR_4                        = PR;
+    PS_4                        = PS;
+    RS_4                        = RS;
+    RT_4                        = RT;
+    QRS_4                       = QRS;
+    QT_4                        = QT;
+    ST_4                        = ST;
+    RT_voltage_4                = RT_voltage;
+    time_intervals_bpm_4        = time_intervals_bpm;
+    BPM_4                       = BPM;
+
+
+
+
+
+    %%%%%%%%%%%%%%%%%%%%%%%%% R5
+    data = load(EXP_folder+'RATON5_CONTROL_FALSAEST_40AN.mat');
+    [ECG, stim_reference, ~, fs, time] = extract_data(data);
+    leg                       = "R5-FAKE - EXP004";
+    th = 0.4;
+
+    if (use_filter == 1)
+        ECG = filter_ECG(ECG, fs);
+    end
+
+    [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, leg);
+    [time_intervals_bpm, BPM] = BPM_calculation_overlap(60, 50, fs, ECG, locs_R);
+    functions_plotting(time, ECG, stim_reference, locs_P, locs_Q, locs_R, locs_S, locs_T, locs_T_init, locs_T_end, locs_P_init, locs_P_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, time_intervals_bpm, BPM, leg)
+    
+    leg_5                       = leg;
+    time_5                      = time;
+    stim_ref_5                  = stim_reference;
+    ECG_5                       = ECG;
+    locs_P_5                    = locs_P;
+    locs_Q_5                    = locs_Q;
+    locs_R_5                    = locs_R;
+    locs_S_5                    = locs_S;
+    locs_T_5                    = locs_T;
+    PR_5                        = PR;
+    PS_5                        = PS;
+    RS_5                        = RS;
+    RT_5                        = RT;
+    QRS_5                       = QRS;
+    QT_5                        = QT;
+    ST_5                        = ST;
+    RT_voltage_5                = RT_voltage;
+    time_intervals_bpm_5        = time_intervals_bpm;
+    BPM_5                       = BPM;
 
 
 
