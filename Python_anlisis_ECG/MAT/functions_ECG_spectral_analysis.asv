@@ -1,0 +1,17 @@
+function functions_E
+
+function HRV(RR, fs_interp)
+    % Interpolar la señal RR a intervalos regulares
+    t_interp = linspace(0, sum(RR), length(RR));
+    
+    fs_interp = 4; % Hz, frecuencia de interpolación
+    
+    tq = 0:1/fs_interp:t_interp(end);
+    RR_interp = interp1(t_interp, RR, tq, 'spline');
+    
+    % Espectro de potencia
+    [pxx,f] = pwelch(RR_interp, [], [], [], fs_interp);
+
+    plot(f,10*log10(pxx));
+    xlabel('Hz'); ylabel('dB'); title('HRV - espectro de potencia');
+end
