@@ -1,25 +1,32 @@
-function [time_intervals, bpm_values_raw] = BPM_calculation_overlap(segment_duration, overlap_duration, fs, ecg_signal, locs_raw)
-    % Cálculo del desplazamiento entre ventanas (en muestras)
-    hop_size = (segment_duration - overlap_duration) * fs;
-    samples_per_segment = segment_duration * fs;
+function [R_time_intervals, BPM, R_intervals] = BPM_calculation_overlap(segment_duration, delta_time, fs, ecg_signal, R_locs)
+    segment_samples = segment_duration*fs;
+    delta_samples = delta_time*fs;
+    % Contar el número de segmentos que se van a estudiar
+    number_of_segments = ceil(length(ecg_signal)/segment_samples);
+    BPM = zeros(1, number_of_segments);
+    R_time_intervals = zeros(1, number_of_segments);
+    R_intervals = zeros(1, number_of_segments);
+    for i = 1:number_of_segments
+        
+        % Definir el inicio y el final del segmento 
+        segment_start = (i-1)*delta_samples+1;
+        segment_end = segment_start + segment_samples - 1;
+        
+        % contar los R que están en el intervalo de muestras que se ha
+        % definido
+        R_counted_segment = sum(R_locs >= segment_start & R_locs<= segment_end);
 
-    % Calcular el número total de ventanas posibles
-    num_segments = floor((length(ecg_signal) - samples_per_segment) / hop_size) + 1;
-
-    bpm_values_raw = zeros(1, num_segments);
-    time_intervals = zeros(1, num_segments);
+        % Guardar en el array de picos R contados en el segmento
+        R_intervals(i) = R_counted_segment;
+        
+        
+        % Guardar el instante en el que se está midiendo el inicio del
+        % intervalo
+        R_time_intervals(i) = (segment_start-1)/fs;
     
-    for i = 1:num_segments
-        segment_start = round((i - 1) * hop_size) + 1;
-        segment_end = segment_start + samples_per_segment - 1;
-
-        % Guardar el tiempo correspondiente al inicio del segmento
-        time_intervals(i) = (segment_start - 1) / fs;
-
-        % Contar los picos en este segmento
-        num_beats_raw = sum(locs_raw >= segment_start & locs_raw <= segment_end);
-
         % Calcular BPM
-        bpm_values_raw(i) = (num_beats_raw / segment_duration) * 60;
+        BPM(i) = (R_counted_segment / segment_duration) * 60;
+        
     end
+    
 end

@@ -1,4 +1,4 @@
-function [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_Q_init, locs_Q_end, locs_T_init, locs_T_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR] = functions_ECG_PQRST(ECG, th, fs, label)
+function [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_Q_init, locs_Q_end, locs_T_init, locs_T_end, PR, PS, RS, RT, QRS, QT, ST, RT_voltage, RR, R_time_intervals, BPM, R_intervals] = functions_ECG_PQRST(ECG, th, fs, label, segment_duration, delta_time)
     locs_R = R_extract(ECG, th, fs);
     [locs_Q, locs_S] = QS_extract(fs, locs_R, ECG);
     [locs_P, locs_T] = PT_extract(fs, locs_R, locs_Q, locs_S, ECG);
@@ -24,6 +24,7 @@ function [locs_P, locs_Q, locs_R, locs_S, locs_T, locs_Q_init, locs_Q_end, locs_
     RT_voltage = RT_voltage_difference(ECG, locs_R, locs_T);
     RR = R_period_calculation(locs_R, fs);
 
+    [R_time_intervals, BPM, R_intervals] = BPM_calculation_overlap(segment_duration, delta_time, fs, ECG, locs_R);
 
 
 end
@@ -40,7 +41,7 @@ function locs_R = R_extract(ECG, th, fs)
     % 3️ Recorrer los picos detectados y tomar el primero de cada par R-T
     i = 1;
     while i < length(locs)
-        if i < length(locs) && (locs(i+1) - locs(i)) < fs * 0.1  % Máximo 200 ms entre picos contiguos
+        if i < length(locs) && (locs(i+1) - locs(i)) < fs * 0.1  % Máximo 100 ms entre picos contiguos
             % Comprobamos distancia mínima con el último guardado
             if isempty(locs_R) || (locs(i) - locs_R(end)) >= fs * 0.1  % 100 ms
                 locs_R = [locs_R; locs(i)];  % Guardamos el primero del par
@@ -60,7 +61,7 @@ end
 
 function [locs_Q, locs_S] = QS_extract(fs, locs_R, ECG)
     ECG = double(ECG);
-    window = round(0.02 * fs);
+    window = round(0.15 * fs);
     
     locs_Q = zeros(size(locs_R));
     locs_S = zeros(size(locs_R));
