@@ -1,16 +1,11 @@
 clc
 clear
 % Definir las variables
-folder = '02_CTB_setup_experiments/';
-exact_name = 'EXP005';
-file_name = 'raton0_control_anestesia';
+folder = 'C:\Users\almud\Downloads\ECG_recording_analysis\Python_analisis_ECG';
+file_name = 'test';
 
-% Crear el comando para ejecutar el script Python con las variables
 comando = sprintf(['python convert_to_matlab.py "%s" "%s"'], folder, file_name);
-
-% Ejecutar el comando en la terminal
 system(comando);
-
 
 %%
 clc
