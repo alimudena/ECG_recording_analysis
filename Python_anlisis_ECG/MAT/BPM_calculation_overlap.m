@@ -2,7 +2,8 @@ function [R_time_intervals, BPM, R_intervals] = BPM_calculation_overlap(segment_
     segment_samples = segment_duration*fs;
     delta_samples = delta_time*fs;
     % Contar el número de segmentos que se van a estudiar
-    number_of_segments = ceil(length(ecg_signal)/segment_samples);
+    signal_length_samples = length(ecg_signal);
+    number_of_segments = ceil(signal_length_samples/delta_samples);
     BPM = zeros(1, number_of_segments);
     R_time_intervals = zeros(1, number_of_segments);
     R_intervals = zeros(1, number_of_segments);
