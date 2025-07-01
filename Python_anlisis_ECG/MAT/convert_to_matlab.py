@@ -1,3 +1,23 @@
+
+import sys
+
+# Verificar e instalar módulos si faltan
+import importlib.util
+try:
+    import pip
+except ImportError:
+    import ensurepip
+    ensurepip.bootstrap()
+    import pip
+
+required = ['neo', 'scipy', 'matplotlib', 'numpy', 'quantities']
+missing = [pkg for pkg in required if importlib.util.find_spec(pkg) is None]
+
+if missing:
+    print(f"Instalando módulos faltantes: {', '.join(missing)}")
+    pip.main(['install'] + missing)
+    
+    
 import neo
 import scipy.io
 import matplotlib.pyplot as plt
