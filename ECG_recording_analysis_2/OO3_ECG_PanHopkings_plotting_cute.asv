@@ -2,8 +2,8 @@ clc
 clear
 % close all
 %%1. Load the data of the file from the folder
-folder = "experiments/VNS-011";
-file = "r1_VNSc_agujas_01.12.25";
+folder = "experiments/VNS-010";
+file = "r1_der_invasivo_electrodo_grande_1mA";
 % Cargar el archivo
 datos = load(folder+"/"+file+".mat");
 %%Extract the ECG signal, the stimulation signal and the sampling frequency used.
@@ -21,12 +21,12 @@ clc;
 %% Select frequencies, timing restrictions for plotting and thresholds 
 % Para los filtrados
 f_low_pass = 250;
-                                                            f0 = 20.3998;     % Frequency of the stimulation
+                                                            f0 = 6.39994;     % Frequency of the stimulation
 f_high_pass = 1;
 f_max = 500;
 
 highpass_filter_order = 4;
-Q = 50;          % Queality factor (higher = thiner)
+Q = 200;          % Queality factor (higher = thiner)
 
 f_max_plot = 5000;
 f_max_plot_small = 100;
@@ -38,7 +38,7 @@ window_samples = round(window_ms * 1e-3 * fs);
 % Para las ppm
 
 t_min = 850;
-                                                                        th_ECG_inf = 10;
+                                                                        th_ECG_inf = 50;
 peak_distance = 0.1*fs;
 
 ventana_segundos = 3;
@@ -46,8 +46,6 @@ delta_t_segundos = 0.5;
 
 %%
 figure
-plot(stim)
-hold on
 plot(ECG)
 %% Cálculo de FFT y primera fila de gráficos
 [fft_value, f_figure] = fft_calculation(ECG([1: 100000]), fs);
@@ -57,7 +55,7 @@ analisis_espectral = tiledlayout(2, 2, "TileSpacing", "compact", "Padding", "com
 
 % --- Fila 1: señal original ---
 ax1 = nexttile([1 1]);
-plot(t([5000000: 5100000]), ECG([5000000: 5100000]));
+plot(t([544000: 64000]), ECG([544000: 554000]));
 title(ax1, 'Original ECG');
 xlabel(ax1, 'Time [s]');
 ylabel(ax1, 'Amplitude');
@@ -73,11 +71,11 @@ xlim(ax2, [0, 500]);  % límite de visualización
 % --- Marcador vertical en 50 Hz para la primera FFT ---
 hold(ax2, 'on');
 xline(ax2, 50, ':r', '50 Hz', 'LabelOrientation', 'horizontal', ...
-      'LabelVerticalAlignment', 'middle', 'LineWidth', 1.8);
+      'LabelVerticalAlignment', 'middle', 'LineWidth', 0.8);
 hold(ax2, 'off');
 
 %%Nueva ventana temporal y su FFT
-times = ([3940000:1:4040000]);
+times = ([4500000:1:4600000]);
 [fft_value, f_figure] = fft_calculation(ECG(times), fs);
 
 % --- Fila 2: señal con estimulación ---
@@ -101,7 +99,7 @@ hold(ax4, 'on');
 
 % 50 Hz (mismo estilo que arriba)
 xline(ax4, 50, ':r', '50 Hz', 'LabelOrientation', 'horizontal', ...
-      'LabelVerticalAlignment', 'middle', 'LineWidth', 1.8);
+      'LabelVerticalAlignment', 'middle', 'LineWidth', 0.8);
 
 % Armónicos de 20 Hz dentro del rango visible/datos
 maxFreqVisible = min(0, max(f_figure));        % asegúrate de no salirte de los datos
@@ -110,14 +108,14 @@ harmonics20 = f0:f0:500;              % 20, 40, 60, ...
 % pero se permite mantener 50 también como armónico si lo quieres ver doble.
 % Aquí optamos por NO etiquetar cada armónico para no saturar:
 xline(ax4, 20.2998, ':k', '20 Hz', 'LabelOrientation', 'horizontal', ...
-      'LabelVerticalAlignment', 'top', 'LineWidth', 1.8);  % líneas punteadas negras
+      'LabelVerticalAlignment', 'top', 'LineWidth', 0.8);  % líneas punteadas negras
 for h = harmonics20
     % usa un estilo distinto a 50 Hz para diferenciarlos
     if h == 50
         % ya está marcado arriba; si quieres que también se pinte como armónico, comenta el 'continue'
         continue;
     end
-    xline(ax4, h, ':k', 'LineWidth', 1.8);  % líneas punteadas negras
+    xline(ax4, h, ':k', 'LineWidth', 0.8);  % líneas punteadas negras
 end
 
 % (opcional) leyenda sencilla para explicar el código de color/estilo
@@ -188,12 +186,12 @@ t_ppm = t_R(2:end);    % tiempos correspondientes a cada RR
 figure;
 % --- ECG left axis---
 yyaxis left
+plot(t, ECG);
 xlabel('Time (s)');
 ylabel('ECG (mV)');
 grid on
 hold on
 plot(t, stim, 'r')
-plot(t, ECG);
 
 % --- BPM right axis---
 yyaxis right
@@ -201,7 +199,6 @@ plot(t_ppm, ppm_rr, 'MarkerSize', 12, 'Color','k');
 ylabel('BPM');
 title('ECG with BPM beat by beat (RR)');
 xlim([0, max(t)])
-% ylim([250, 550])
 
 hold off
 
