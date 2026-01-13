@@ -38,7 +38,7 @@ window_samples = round(window_ms * 1e-3 * fs);
 % Para las ppm
 
 t_min = 850;
-                                                                        th_ECG_inf = 10;
+                                                                        th_ECG_inf = 50;
 peak_distance = 0.1*fs;
 
 ventana_segundos = 3;
