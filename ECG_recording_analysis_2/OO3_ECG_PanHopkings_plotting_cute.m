@@ -2,8 +2,8 @@ clc
 clear
 % close all
 %%1. Load the data of the file from the folder
-folder = "experiments/VNS-011";
-file = "r1_VNSc_agujas_01.12.25";
+folder = "experiments/VNS-012";
+file = "r3_1mA_bipolar";
 % Cargar el archivo
 datos = load(folder+"/"+file+".mat");
 %%Extract the ECG signal, the stimulation signal and the sampling frequency used.
@@ -21,7 +21,7 @@ clc;
 %% Select frequencies, timing restrictions for plotting and thresholds 
 % Para los filtrados
 f_low_pass = 250;
-                                                            f0 = 20.3998;     % Frequency of the stimulation
+                                                            f0 = 9.5;     % Frequency of the stimulation
 f_high_pass = 1;
 f_max = 500;
 
@@ -38,7 +38,7 @@ window_samples = round(window_ms * 1e-3 * fs);
 % Para las ppm
 
 t_min = 850;
-                                                                        th_ECG_inf = 50;
+                                                                        th_ECG_inf = 20;
 peak_distance = 0.1*fs;
 
 ventana_segundos = 3;
@@ -46,8 +46,8 @@ delta_t_segundos = 0.5;
 
 %%
 figure
-plot(stim)
-hold on
+% plot(stim)
+% hold on
 plot(ECG)
 %% Cálculo de FFT y primera fila de gráficos
 [fft_value, f_figure] = fft_calculation(ECG([1: 100000]), fs);
@@ -77,7 +77,7 @@ xline(ax2, 50, ':r', '50 Hz', 'LabelOrientation', 'horizontal', ...
 hold(ax2, 'off');
 
 %%Nueva ventana temporal y su FFT
-times = ([3940000:1:4040000]);
+times = ([11400000:1:11500000]);
 [fft_value, f_figure] = fft_calculation(ECG(times), fs);
 
 % --- Fila 2: señal con estimulación ---
@@ -151,6 +151,27 @@ for f = harmonics
     ecg_filtered_harmonics = filtfilt(b, ppm, ecg_filtered_harmonics);  % filtrado en ambas direcciones
 end
 
+%% 
+figure
+%%Nueva ventana temporal y su FFT
+times = ([11400000:1:11500000]);
+[fft_value, f_figure] = fft_calculation(ecg_filtered_harmonics(times), fs);
+
+% --- Fila 2: señal con estimulación ---
+ax3 = nexttile([1 1]);
+plot(t(times), ecg_filtered_harmonics(times));
+title(ax3, 'ECG with stimulation');
+xlabel(ax3, 'Time [s]');
+ylabel(ax3, 'Amplitude');
+xlim([min(times./fs), max(times./fs)])
+
+% --- Fila 2: FFT con estimulación ---
+ax4 = nexttile([1 1]);
+plot(f_figure, fft_value);
+title(ax4, 'FFT with stimulation');
+xlabel(ax4, 'Frequency [Hz]');
+ylabel(ax4, 'Power');
+xlim(ax4, [0, 500]);  % límite de visualización
 
 
 %% Derivative (Pan–Tompkins, FIR 5 puntos, ganancia 0.1, retardo 2 muestras)
@@ -192,7 +213,7 @@ xlabel('Time (s)');
 ylabel('ECG (mV)');
 grid on
 hold on
-plot(t, stim, 'r')
+% plot(t, stim, 'r')
 plot(t, ECG);
 
 % --- BPM right axis---

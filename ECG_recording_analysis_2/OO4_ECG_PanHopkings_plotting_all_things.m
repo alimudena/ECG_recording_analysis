@@ -2,8 +2,8 @@ clc
 clear
 close all
 %%1. Load the data of the file from the folder
-folder = "experiments/VNS-002";
-file = "RATON1-AN+EST";
+folder = "experiments/VNS-011";
+file = "r1_VNSc_agujas_01.12.25";
 % Cargar el archivo
 datos = load(folder+"/"+file+".mat");
 %% Extract the ECG signal, the stimulation signal and the sampling frequency used.
@@ -38,7 +38,7 @@ window_samples = round(window_ms * 1e-3 * fs);
 % Para las ppm
 
 t_min = 850;
-th_ECG_inf = 20;
+th_ECG_inf = 50;
 peak_distance = 0.1*fs;
 
 ventana_segundos = 3;
@@ -133,6 +133,7 @@ title('50 Hz Notch filter');
 
 ax = findall(fig, 'Type', 'axes');
 arrayfun(@(a) xlim(a, [0 0.2]), ax);
+
 
 
 
@@ -368,18 +369,20 @@ plot_with_peaks(mwi_signal, t, A_T, th_ECG_inf, ecg_filtered_harmonics);
 
 figure;
 % --- ECG left axis---
-yyaxis left
+% yyaxis left
 plot(t, ECG);
 xlabel('Time (s)');
 ylabel('ECG (mV)');
 grid on
 hold on
-
+title('ECG with BPM beat by beat (RR)');
+%%
 % --- BPM right axis---
 yyaxis right
 plot(t_ppm, ppm_rr, 'MarkerSize', 12);
 ylabel('BPM');
-title('ECG with BPM beat by beat (RR)');
+ylim([0, 1200])
+
 %% Visualization of all together
 
 
