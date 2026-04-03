@@ -4,7 +4,7 @@ function plot_with_peaks_VNS(Experiments, rodent, experiment_number)
     mwi_signal = experiment.obtained_signals.mwi_signal;
     t = experiment.obtained_signals.time;
     A_T = experiment.marquers.R_T;
-    th_ECG_inf = experiment.function_parameters.threshold;
+    th_ECG_inf = experiment.function_parameters.Threshold;
     ECG = experiment.obtained_signals.ECG;
     
     figure
