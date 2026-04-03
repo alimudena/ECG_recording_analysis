@@ -42,10 +42,10 @@ Experiments(rodent).ID= "R1";
     high_cut = 23;
     window_smooth = 0.0005;
     n = 600;   % orden optimizado para velocidad
-
+%%
 
     experiment_fill_in;
-
+%%
 plot_with_peaks_VNS(Experiments, rodent, 1);
 plot_ECG_and_HRV(Experiments, rodent, 1);
 

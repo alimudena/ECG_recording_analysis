@@ -1,4 +1,4 @@
-function [stim_array, env_smooth, threshold_stim, start_idx, end_idx] = extract_stim_times(low_cut, high_cut, window_smooth, n, stim, fs)
+function [stim_array, env_smooth, threshold_stim, start_idx, end_idx] = extract_stim_times(low_cut, high_cut, window_smooth, n, stim, fs, max_gap_sec, min_dur_sec)
 
     
     Wp = [low_cut, high_cut] / (fs/2);
@@ -22,14 +22,10 @@ function [stim_array, env_smooth, threshold_stim, start_idx, end_idx] = extract_
 
     stim_on = env_smooth > threshold_stim;
 
-    figure
-    plot(stim_on)
-
     stim_on = logical(stim_on);
     stim_on = stim_on(:);
     
     % ----- A. RELLENAR HUECOS GRANDES ENTRE PULSOS -----
-    max_gap_sec = 3;                     % <-- AJÚSTALO (te recomiendo 2s)
     max_gap_samples = round(max_gap_sec * fs);
     
     d = diff([0; stim_on; 0]);
@@ -52,7 +48,6 @@ function [stim_array, env_smooth, threshold_stim, start_idx, end_idx] = extract_
     
     
     % ----- C. QUEDARSE SOLO CON BLOQUES GRANDES -----
-    min_dur_sec = 10;                   % mínimo: 20s
     min_samples = round(min_dur_sec * fs);
     
     stim_clean = zeros(size(stim_on));
@@ -66,10 +61,6 @@ function [stim_array, env_smooth, threshold_stim, start_idx, end_idx] = extract_
     
     stim_array = stim_clean;      % vector final de estimulación
 
-    figure
-    plot(stim_clean)
-
-
     % Detectamos cambios
     d = diff(stim_clean);
     
@@ -80,12 +71,12 @@ function [stim_array, env_smooth, threshold_stim, start_idx, end_idx] = extract_
     end_idx = find(d == -1);
     
     % Caso especial: si empieza ya en 1
-    if stim_ON_OFF(1) == 1
+    if stim_clean(1) == 1
         start_idx = [1, start_idx];
     end
     
     % Caso especial: si termina en 1
-    if stim_ON_OFF(end) == 1
+    if stim_clean(end) == 1
         end_idx = [end_idx, length(stim_ON_OFF)];
     end
 

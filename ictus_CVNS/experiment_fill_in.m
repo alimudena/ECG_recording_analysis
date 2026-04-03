@@ -75,11 +75,12 @@
 
 
     %Extraction of the times it is ON and OFF the stimulation
-    [stim_on_off, env_smooth, threshold_stim, start_idx, end_idx] = extract_stim_times(low_cut, high_cut, window_smooth, n, stim, fs);
+    [stim_on_off, env_smooth, threshold_stim, start_idx, end_idx] = extract_stim_times(low_cut, high_cut, window_smooth, n, stim, fs, max_gap_sec, min_dur_sec);
+
     Experiments(rodent).experiment_number(Experiment_number).obtained_signals.stim_ON_OFF = stim_on_off;
     Experiments(rodent).experiment_number(Experiment_number).obtained_signals.env_SMOOTH = env_smooth;
     Experiments(rodent).experiment_number(Experiment_number).obtained_signals.threshold_Stim = threshold_stim;
     Experiments(rodent).experiment_number(Experiment_number).obtained_signals.start_stim_positions = start_idx;
-    Experiments(rodent).experiment_number(Experiment_number).obtained_signals.end_stim_positions= end_idx;
+    Experiments(rodent).experiment_number(Experiment_number).obtained_signals.end_stim_positions = end_idx;
 
     

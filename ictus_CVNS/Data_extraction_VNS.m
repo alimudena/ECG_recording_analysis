@@ -10,14 +10,14 @@ Experimental_types =  ["Aricular", "Cervical", "Control"];
 Experimental_polarity = ["Unipolar", "Bipolar"];
 
 Experiments = struct();
+
 rodent = 1;
 R1;
 %%
 plot_with_peaks_VNS(Experiments, rodent, 1);
 plot_ECG_and_HRV(Experiments, rodent, 1);
+plot_stim_ON_OFF(Experiments, rodent, 1);
 
-% plot_with_peaks_VNS(Experiments, rodent, 2);
-% plot_ECG_and_HRV(Experiments, rodent, 2);
 
 %%
 rodent = 2;
