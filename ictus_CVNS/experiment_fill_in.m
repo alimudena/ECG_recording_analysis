@@ -53,6 +53,7 @@
     Experiments(rodent).experiment_number(Experiment_number).function_parameters.Peak_distance = peak_distance;
     Experiments(rodent).experiment_number(Experiment_number).function_parameters.F_max_plot= f_max_plot;
     Experiments(rodent).experiment_number(Experiment_number).function_parameters.F_max_plot_small = f_max_plot_small;
+    Experiments(rodent).experiment_number(Experiment_number).function_parameters.studied_intervals = studied_intervals;
 
 
     Experiments(rodent).experiment_number(Experiment_number).function_parameters.Low_cut = low_cut;
@@ -83,4 +84,21 @@
     Experiments(rodent).experiment_number(Experiment_number).obtained_signals.start_stim_positions = start_idx;
     Experiments(rodent).experiment_number(Experiment_number).obtained_signals.end_stim_positions = end_idx;
 
+
+
+    [all_before_mnn, all_during_mnn, all_after_mnn, ...
+    all_before_sdnn, all_during_sdnn, all_after_sdnn,...
+    all_before_rmssd, all_during_rmssd, all_after_rmssd] = fill_hrv_parameters(start_idx, end_idx, fs, R_T, studied_intervals);
     
+    Experiments(rodent).experiment_number(Experiment_number).marquers.before_MNN = all_before_mnn;
+    Experiments(rodent).experiment_number(Experiment_number).marquers.during_MNN = all_during_mnn;
+    Experiments(rodent).experiment_number(Experiment_number).marquers.after_MNN = all_after_mnn;
+
+
+    Experiments(rodent).experiment_number(Experiment_number).marquers.before_SDNN = all_before_sdnn;
+    Experiments(rodent).experiment_number(Experiment_number).marquers.during_SDNN = all_during_sdnn;
+    Experiments(rodent).experiment_number(Experiment_number).marquers.after_SDNN = all_after_sdnn;
+
+    Experiments(rodent).experiment_number(Experiment_number).marquers.before_RMSSD = all_before_rmssd;
+    Experiments(rodent).experiment_number(Experiment_number).marquers.during_RMSSD = all_during_rmssd;
+    Experiments(rodent).experiment_number(Experiment_number).marquers.after_RMSSD = all_after_rmssd;

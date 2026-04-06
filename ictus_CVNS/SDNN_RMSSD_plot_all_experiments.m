@@ -1,0 +1,161 @@
+S = [];
+P = [];
+for rodent_n = 1:length(Experiments)
+    for experiment_n = 1:length(Experiments(rodent_n).experiment_number)
+        B = Experiments(rodent_n).experiment_number(experiment_n).marquers.before_RMSSD(1);
+    
+        S = [S, (Experiments(rodent_n).experiment_number(experiment_n).marquers.during_RMSSD(:)-B)/B*100];
+        P = [P, (Experiments(rodent_n).experiment_number(experiment_n).marquers.after_RMSSD(:)-B)/B*100];
+    end
+end
+
+S1 = S(1, :);
+P1 = P(1, :);
+
+S2 = S(2, :);
+P2 = P(2, :);
+
+S3 = S(3, :);
+P3 = P(3, :);
+
+S4 = S(4, :);
+P4 = P(4, :);
+
+S5 = S(5, :);
+P5 = P(5, :);
+
+% 1. Preparar los datos para el gráfico (promedios de todos los experimentos)
+% La Fase B (Baseline) es siempre 0% por definición en tu cálculo
+mean_S1 = mean(S1);
+mean_P1 = mean(P1);
+
+mean_S2 = mean(S2);
+mean_P2 = mean(P2);
+
+mean_S3 = mean(S3);
+mean_P3 = mean(P3);
+
+mean_S4 = mean(S4);
+mean_P4 = mean(P4);
+
+mean_S5 = mean(S5);
+mean_P5 = mean(P5);
+
+mean_data = [mean_S1, mean_P1, mean_S2, mean_P2, mean_S3, mean_P3, mean_S4, mean_P4, mean_S5, mean_P5];
+
+% 2. Calcular el SEM (Error estándar de la media)
+% El SEM de B es 0. Para S y P es: Desviación estándar / raíz(N)
+sem_S1 = std(S1) / sqrt(numel(S1));
+sem_P1 = std(P1) / sqrt(numel(P1));
+
+sem_S2 = std(S2) / sqrt(numel(S2));
+sem_P2 = std(P2) / sqrt(numel(P2));
+
+sem_S3 = std(S3) / sqrt(numel(S3));
+sem_P3 = std(P3) / sqrt(numel(P3));
+
+sem_S4 = std(S4) / sqrt(numel(S4));
+sem_P4 = std(P4) / sqrt(numel(P4));
+
+sem_S5 = std(S5) / sqrt(numel(S5));
+sem_P5 = std(P5) / sqrt(numel(P5));
+
+sem_data = [sem_S1, sem_P1, sem_S2, sem_P2, sem_S3, sem_P3, sem_S4, sem_P4, sem_S5, sem_P5];
+
+
+figure('Color', 'w');
+hold on;
+% Dibujar barras (Gris claro como en el paper)
+b = bar(1:10, mean_data, 'FaceColor', [0.85 0.85 0.85], 'EdgeColor', 'k', 'LineWidth', 0.2);
+
+% Añadir barras de error (SEM)
+errorbar(1:10, mean_data, sem_data, 'k', 'LineStyle', 'none', 'LineWidth', 1.5, 'CapSize', 10);
+
+% 4. Estética estilo Szeles et al. 2021
+ylabel('\Delta RMSSD [%]', 'FontSize', 12, 'FontWeight', 'bold');
+set(gca, 'XTick', 1:10, 'XTickLabel', {'S1', 'P1', 'S2', 'P2', 'S3', 'P3', 'S4', 'P4', 'S5', 'P5'}, 'FontSize', 11);
+title('Efecto de la estimulación en RMSSD');
+
+
+
+
+
+
+%%
+S = [];
+P = [];
+for rodent_n = 1:length(Experiments)
+    for experiment_n = 1:length(Experiments(rodent_n).experiment_number)
+        B = Experiments(rodent_n).experiment_number(experiment_n).marquers.before_SDNN(1);
+    
+        S = [S, (Experiments(rodent_n).experiment_number(experiment_n).marquers.during_SDNN(:)-B)/B*100];
+        P = [P, (Experiments(rodent_n).experiment_number(experiment_n).marquers.after_SDNN(:)-B)/B*100];
+    end
+end
+
+S1 = S(1, :);
+P1 = P(1, :);
+
+S2 = S(2, :);
+P2 = P(2, :);
+
+S3 = S(3, :);
+P3 = P(3, :);
+
+S4 = S(4, :);
+P4 = P(4, :);
+
+S5 = S(5, :);
+P5 = P(5, :);
+
+% 1. Preparar los datos para el gráfico (promedios de todos los experimentos)
+% La Fase B (Baseline) es siempre 0% por definición en tu cálculo
+mean_S1 = mean(S1);
+mean_P1 = mean(P1);
+
+mean_S2 = mean(S2);
+mean_P2 = mean(P2);
+
+mean_S3 = mean(S3);
+mean_P3 = mean(P3);
+
+mean_S4 = mean(S4);
+mean_P4 = mean(P4);
+
+mean_S5 = mean(S5);
+mean_P5 = mean(P5);
+
+mean_data = [mean_S1, mean_P1, mean_S2, mean_P2, mean_S3, mean_P3, mean_S4, mean_P4, mean_S5, mean_P5];
+
+% 2. Calcular el SEM (Error estándar de la media)
+% El SEM de B es 0. Para S y P es: Desviación estándar / raíz(N)
+sem_S1 = std(S1) / sqrt(numel(S1));
+sem_P1 = std(P1) / sqrt(numel(P1));
+
+sem_S2 = std(S2) / sqrt(numel(S2));
+sem_P2 = std(P2) / sqrt(numel(P2));
+
+sem_S3 = std(S3) / sqrt(numel(S3));
+sem_P3 = std(P3) / sqrt(numel(P3));
+
+sem_S4 = std(S4) / sqrt(numel(S4));
+sem_P4 = std(P4) / sqrt(numel(P4));
+
+sem_S5 = std(S5) / sqrt(numel(S5));
+sem_P5 = std(P5) / sqrt(numel(P5));
+
+sem_data = [sem_S1, sem_P1, sem_S2, sem_P2, sem_S3, sem_P3, sem_S4, sem_P4, sem_S5, sem_P5];
+
+
+figure('Color', 'w');
+hold on;
+% Dibujar barras (Gris claro como en el paper)
+b = bar(1:10, mean_data, 'FaceColor', [0.85 0.85 0.85], 'EdgeColor', 'k', 'LineWidth', 0.2);
+
+% Añadir barras de error (SEM)
+errorbar(1:10, mean_data, sem_data, 'k', 'LineStyle', 'none', 'LineWidth', 1.5, 'CapSize', 10);
+
+% 4. Estética estilo Szeles et al. 2021
+ylabel('\Delta SDNN [%]', 'FontSize', 12, 'FontWeight', 'bold');
+set(gca, 'XTick', 1:10, 'XTickLabel', {'S1', 'P1', 'S2', 'P2', 'S3', 'P3', 'S4', 'P4', 'S5', 'P5'}, 'FontSize', 11);
+title('Efecto de la estimulación en SDNN');

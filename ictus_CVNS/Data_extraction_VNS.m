@@ -22,3 +22,12 @@ plot_stim_ON_OFF(Experiments, rodent, 1);
 %%
 rodent = 2;
 R2;
+
+
+plot_with_peaks_VNS(Experiments, rodent, 2);
+plot_ECG_and_HRV(Experiments, rodent, 2);
+plot_stim_ON_OFF(Experiments, rodent, 2);
+
+
+%%
+SDNN_RMSSD_plot_all_experiments
