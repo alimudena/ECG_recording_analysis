@@ -92,7 +92,6 @@
     all_before_rmssd, all_during_rmssd, all_after_rmssd,...
     all_before_LF, all_during_LF, all_after_LF,...
     all_before_HF, all_during_HF, all_after_HF,...
-    all_before_TP, all_during_TP, all_after_TP,...
     all_before_LF_HF_ratio, all_during_LF_HF_ratio, all_after_LF_HF_ratio...
     ] = fill_hrv_parameters(start_idx, end_idx, fs, R_T, n);
 
@@ -118,10 +117,6 @@
     Experiments(rodent).experiment_number(Experiment_number).marquers.during_HF = all_during_HF;
     Experiments(rodent).experiment_number(Experiment_number).marquers.after_HF = all_after_HF;
 
-    Experiments(rodent).experiment_number(Experiment_number).marquers.before_TP = all_before_TP;
-    Experiments(rodent).experiment_number(Experiment_number).marquers.during_TP = all_during_TP;
-    Experiments(rodent).experiment_number(Experiment_number).marquers.after_TP = all_after_TP;
-
     Experiments(rodent).experiment_number(Experiment_number).marquers.before_LF_HF_ratio = all_before_LF_HF_ratio;
     Experiments(rodent).experiment_number(Experiment_number).marquers.during_LF_HF_ratio = all_during_LF_HF_ratio;
     Experiments(rodent).experiment_number(Experiment_number).marquers.after_LF_HF_ratio = all_after_LF_HF_ratio;
@@ -140,9 +135,9 @@
     Experiments(rodent).experiment_number(Experiment_number).marquers.after_PPM_Ns_t = t_ppm_after_10s;
    
 
-    [MNN_N_baseline, SDDN_N_baseline, RMSSD_N_baseline, LF_N_baseline, HF_N_baseline, LF_HF_N_baseline, TP_N_baseline, ...
-      MNN_N_stimulation, SDDN_N_stimulation, RMSSD_N_stimulation, LF_N_stimulation, HF_N_stimulation, TP_N_stimulation, LF_HF_N_stimulation,...
-       MNN_N_rest, SDDN_N_rest, RMSSD_N_rest, LF_N_rest, HF_N_rest, TP_N_rest, LF_HF_N_rest,...
+    [MNN_N_baseline, SDDN_N_baseline, RMSSD_N_baseline, LF_N_baseline, HF_N_baseline, LF_HF_N_baseline, ...
+      MNN_N_stimulation, SDDN_N_stimulation, RMSSD_N_stimulation, LF_N_stimulation, HF_N_stimulation, LF_HF_N_stimulation,...
+       MNN_N_rest, SDDN_N_rest, RMSSD_N_rest, LF_N_rest, HF_N_rest, LF_HF_N_rest,...
        time_intervals]...
        = calculate_hrv_parameters_small_time(start_idx, end_idx, fs, R_T, small_time);
 
@@ -160,18 +155,15 @@
 
     Experiments(rodent).experiment_number(Experiment_number).marquers.LF_N_baseline = LF_N_baseline;
     Experiments(rodent).experiment_number(Experiment_number).marquers.HF_N_baseline = HF_N_baseline;
-    Experiments(rodent).experiment_number(Experiment_number).marquers.TP_N_baseline = TP_N_baseline;
     Experiments(rodent).experiment_number(Experiment_number).marquers.LF_HF_N_baseline = LF_HF_N_baseline;
 
     Experiments(rodent).experiment_number(Experiment_number).marquers.LF_N_stimulation = LF_N_stimulation;
     Experiments(rodent).experiment_number(Experiment_number).marquers.HF_N_stimulation = HF_N_stimulation;
-    Experiments(rodent).experiment_number(Experiment_number).marquers.TP_N_stimulation = TP_N_stimulation;
     Experiments(rodent).experiment_number(Experiment_number).marquers.LF_HF_N_stimulation = LF_HF_N_stimulation;
 
     Experiments(rodent).experiment_number(Experiment_number).marquers.LF_N_rest = LF_N_rest;
-    Experiments(rodent).experiment_number(Experiment_number).marquers.HF_N_rest = HF_N_rest;
-    Experiments(rodent).experiment_number(Experiment_number).marquers.TP_N_rest = TP_N_rest;
-    Experiments(rodent).experiment_number(Experiment_number).marquers.LF_HF_N_rest = LF_HF_N_rest;
+    Experiments(rodent).experiment_number(Experiment_number).marquers.SDDN_N_rest = HF_N_rest;
+    Experiments(rodent).experiment_number(Experiment_number).marquers.RMSSD_N_rest = LF_HF_N_rest;
 
 
-    Experiments(rodent).experiment_number(Experiment_number).marquers.time_intervals_small = sort(time_intervals);
+    Experiments(rodent).experiment_number(Experiment_number).marquers.time_intervals_small = sort(time_intervals_small);

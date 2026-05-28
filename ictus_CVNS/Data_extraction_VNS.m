@@ -13,10 +13,37 @@ Experiments = struct();
 
 rodent = 1;
 R1;
+
+
+% %%
+% save('Experiments.mat', 'Experiments');
+% clc
+% clear
+% load("Experiments.mat");
+
 %%
+rodent = 1;
 plot_with_peaks_VNS(Experiments, rodent, 1);
+%%
 plot_ECG_and_HRV(Experiments, rodent, 1);
+%%
 plot_stim_ON_OFF(Experiments, rodent, 1);
+%%
+experiment_number = 2;
+% Todas las estimulaciones del experimento
+plot_ppm_Ns(Experiments, rodent, experiment_number);
+%%
+% Solo la estimulación 2
+plot_ppm_Ns(Experiments, rodent, experiment_number, 2);
+
+
+%%
+% Plot de los parametros de HRV cada 5 segundos
+plot_hrv_small_time_sequence(Experiments, 1, 1);
+%%
+plot_hrv_small_time_sequence(Experiments, 1, 2);
+
+
 
 
 %%
@@ -30,4 +57,12 @@ plot_stim_ON_OFF(Experiments, rodent, 2);
 
 
 %%
-SDNN_RMSSD_plot_all_experiments
+% close all
+bar_graph_plot_all_experiments
+
+
+%% Calculate P values for all experiments
+[HRV_parameters, TablaComparativa] = HRV_pvalues_extraction(Experiments);
+
+disp(TablaComparativa);
+
