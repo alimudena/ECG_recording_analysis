@@ -1,4 +1,8 @@
-%% RMSSD
+disp('Start graphing and saving all experiments results together');
+
+Resultados = table();
+
+%% MNN
 
 
 S = [];
@@ -75,11 +79,19 @@ b = bar(1:10, mean_data, 'FaceColor', [0.85 0.85 0.85], 'EdgeColor', 'k', 'LineW
 errorbar(1:10, mean_data, sem_data, 'k', 'LineStyle', 'none', 'LineWidth', 1.5, 'CapSize', 10);
 
 % 4. Estética estilo Szeles et al. 2021
-ylabel('\Delta MNN [%]', 'FontSize', 12, 'FontWeight', 'bold');
+ylabel('\Delta RMSSD [%]', 'FontSize', 12, 'FontWeight', 'bold');
 set(gca, 'XTick', 1:10, 'XTickLabel', {'S1', 'P1', 'S2', 'P2', 'S3', 'P3', 'S4', 'P4', 'S5', 'P5'}, 'FontSize', 11);
 title('Efecto de la estimulación en MNN');
 
+T = cell2table([{'MNN - Media'}, num2cell(mean_data)], ...
+    'VariableNames', {'Parametro','S1','P1','S2','P2','S3','P3','S4','P4','S5','P5'});
 
+Resultados = [Resultados; T];
+
+T = cell2table([{'MNN - DesvTip'}, num2cell(sem_data)], ...
+    'VariableNames', {'Parametro','S1','P1','S2','P2','S3','P3','S4','P4','S5','P5'});
+
+Resultados = [Resultados; T];
 
 %% RMSSD
 
@@ -163,7 +175,15 @@ set(gca, 'XTick', 1:10, 'XTickLabel', {'S1', 'P1', 'S2', 'P2', 'S3', 'P3', 'S4',
 title('Efecto de la estimulación en RMSSD');
 
 
+T = cell2table([{'RMSSD - Media'}, num2cell(mean_data)], ...
+    'VariableNames', {'Parametro','S1','P1','S2','P2','S3','P3','S4','P4','S5','P5'});
 
+Resultados = [Resultados; T];
+
+T = cell2table([{'RMSSD - DesvTip'}, num2cell(sem_data)], ...
+    'VariableNames', {'Parametro','S1','P1','S2','P2','S3','P3','S4','P4','S5','P5'});
+
+Resultados = [Resultados; T];
 %% SDNN
 S = [];
 P = [];
@@ -243,7 +263,15 @@ ylabel('\Delta SDNN [%]', 'FontSize', 12, 'FontWeight', 'bold');
 set(gca, 'XTick', 1:10, 'XTickLabel', {'S1', 'P1', 'S2', 'P2', 'S3', 'P3', 'S4', 'P4', 'S5', 'P5'}, 'FontSize', 11);
 title('Efecto de la estimulación en SDNN');
 
+T = cell2table([{'SDNN - Media'}, num2cell(mean_data)], ...
+    'VariableNames', {'Parametro','S1','P1','S2','P2','S3','P3','S4','P4','S5','P5'});
 
+Resultados = [Resultados; T];
+
+T = cell2table([{'SDNN - DesvTip'}, num2cell(sem_data)], ...
+    'VariableNames', {'Parametro','S1','P1','S2','P2','S3','P3','S4','P4','S5','P5'});
+
+Resultados = [Resultados; T];
 
 %% LF
 S = [];
@@ -323,6 +351,16 @@ errorbar(1:10, mean_data, sem_data, 'k', 'LineStyle', 'none', 'LineWidth', 1.5, 
 ylabel('\Delta LF [%]', 'FontSize', 12, 'FontWeight', 'bold');
 set(gca, 'XTick', 1:10, 'XTickLabel', {'S1', 'P1', 'S2', 'P2', 'S3', 'P3', 'S4', 'P4', 'S5', 'P5'}, 'FontSize', 11);
 title('Efecto de la estimulación en LF');
+
+T = cell2table([{'\Delta LF - Media'}, num2cell(mean_data)], ...
+    'VariableNames', {'Parametro','S1','P1','S2','P2','S3','P3','S4','P4','S5','P5'});
+
+Resultados = [Resultados; T];
+
+T = cell2table([{'\Delta LF - DesvTip'}, num2cell(sem_data)], ...
+    'VariableNames', {'Parametro','S1','P1','S2','P2','S3','P3','S4','P4','S5','P5'});
+
+Resultados = [Resultados; T];
 %% HF
 S = [];
 P = [];
@@ -401,6 +439,16 @@ errorbar(1:10, mean_data, sem_data, 'k', 'LineStyle', 'none', 'LineWidth', 1.5, 
 ylabel('\Delta HF [%]', 'FontSize', 12, 'FontWeight', 'bold');
 set(gca, 'XTick', 1:10, 'XTickLabel', {'S1', 'P1', 'S2', 'P2', 'S3', 'P3', 'S4', 'P4', 'S5', 'P5'}, 'FontSize', 11);
 title('Efecto de la estimulación en HF');
+
+T = cell2table([{'\Delta HF - Media'}, num2cell(mean_data)], ...
+    'VariableNames', {'Parametro','S1','P1','S2','P2','S3','P3','S4','P4','S5','P5'});
+
+Resultados = [Resultados; T];
+
+T = cell2table([{'\Delta HF - DesvTip'}, num2cell(sem_data)], ...
+    'VariableNames', {'Parametro','S1','P1','S2','P2','S3','P3','S4','P4','S5','P5'});
+
+Resultados = [Resultados; T];
 %% TP_ratio
 S = [];
 P = [];
@@ -480,6 +528,17 @@ ylabel('\Delta TP[%]', 'FontSize', 12, 'FontWeight', 'bold');
 set(gca, 'XTick', 1:10, 'XTickLabel', {'S1', 'P1', 'S2', 'P2', 'S3', 'P3', 'S4', 'P4', 'S5', 'P5'}, 'FontSize', 11);
 title('Efecto de la estimulación en TP');
 
+
+
+T = cell2table([{'\Delta TP - Media'}, num2cell(mean_data)], ...
+    'VariableNames', {'Parametro','S1','P1','S2','P2','S3','P3','S4','P4','S5','P5'});
+
+Resultados = [Resultados; T];
+
+T = cell2table([{'\Delta TP - DesvTip'}, num2cell(sem_data)], ...
+    'VariableNames', {'Parametro','S1','P1','S2','P2','S3','P3','S4','P4','S5','P5'});
+
+Resultados = [Resultados; T];
 %% LF_HF_ratio
 S = [];
 P = [];
@@ -558,3 +617,16 @@ errorbar(1:10, mean_data, sem_data, 'k', 'LineStyle', 'none', 'LineWidth', 1.5, 
 ylabel('\Delta {LF/HF}[%]', 'FontSize', 12, 'FontWeight', 'bold');
 set(gca, 'XTick', 1:10, 'XTickLabel', {'S1', 'P1', 'S2', 'P2', 'S3', 'P3', 'S4', 'P4', 'S5', 'P5'}, 'FontSize', 11);
 title('Efecto de la estimulación en LF/HF');
+
+
+T = cell2table([{'\Delta {LF/HF} - Media'}, num2cell(mean_data)], ...
+    'VariableNames', {'Parametro','S1','P1','S2','P2','S3','P3','S4','P4','S5','P5'});
+
+Resultados = [Resultados; T];
+
+T = cell2table([{'\Delta {LF/HF} - DesvTip'}, num2cell(sem_data)], ...
+    'VariableNames', {'Parametro','S1','P1','S2','P2','S3','P3','S4','P4','S5','P5'});
+
+Resultados = [Resultados; T];
+
+disp('Done');

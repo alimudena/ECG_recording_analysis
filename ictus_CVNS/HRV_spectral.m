@@ -45,11 +45,10 @@ RR_interp = interp1(t_RR, RR, t_uniform, 'spline');
 RR_interp = detrend(RR_interp);
 
 %%--- 4. PSD con Welch ---
-window = round(5 * fs_interp); % ventana de 5 s
-noverlap = round(window / 2);
-window = min(window, length(RR_interp));
+window = min(round(5 * fs_interp), length(RR_interp));
+noverlap = min(floor(window/2), window-1);
 
-[pxx, f] = pwelch(RR_interp, window, noverlap, [], fs_interp);
+[pxx,f] = pwelch(RR_interp, window, noverlap, [], fs_interp);
 
 %%--- 5. Bandas LF y HF (ratón) ---
 LF_band = [0.1 1.0];

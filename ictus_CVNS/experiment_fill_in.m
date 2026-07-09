@@ -8,13 +8,48 @@
     % ECG filtering : 50 Hz, stimulation frequency and harmonics, low pass
     % filter
     ECG_filtered = filtering_ECG(ECG, fs, Q, f_low_pass, f_high_pass, f0, f_max);
+    [ECG_filtered] = filtering_50Hz(ECG_filtered, fs, Q);
     window_samples = round(window_ms * 1e-3 * fs);  
     mwi_signal = PanHopkings(ECG_filtered, fs, window_samples);
-    [R, R_T]  = findpeaks(mwi_signal, 'MinPeakHeight', th_ECG_inf, 'MinPeakDistance', peak_distance*fs);
-    
+    % [R, R_T]  = findpeaks(mwi_signal, 'MinPeakHeight', th_ECG_inf, 'MinPeakDistance', peak_distance*fs);
+    mwi_smooth = movmean(mwi_signal, round(0.01*fs)); 
+    [R, R_T] = findpeaks(mwi_smooth, 'MinPeakDistance', peak_distance);
+    % idx = R > th_ECG_inf;
+    idx = (R > th_ECG_inf) & (R < th_ECG_sup);
+
+    R_T_B = R_T;
+    % 
+    % figure
+    % plot(mwi_smooth)
+    % hold on
+    % plot(R_T(~idx), R(~idx), '.r')
+    % plot(R_T(idx),  R(idx),  '.g')
+    % yline(th_ECG_inf,'k')
+    % length(R_T_B)
+    % length(R_T(idx))
+    % 
+    % figure
+    % plot(ECG)
+    % hold on
+    % plot(R_T(~idx), ECG(~idx), '.r')
+    % plot(R_T(idx),  ECG(idx),  '.g')
+
+
+
+    R_T = R_T(idx);
+    R = R(idx);
+    % length(R_T)
     
     %%Calculation of bpm with MWI signal beat by beat
     HRV = diff(R_T) / fs;  % en segundos
+    th_inf = mean(HRV)-0.04;
+    th_sup = mean(HRV)+0.04;
+    for i = 2:length(HRV)
+        if HRV(i) < th_inf || HRV(i) > th_sup
+            HRV(i) = HRV(i-1);
+        end
+    end
+
     t_R = R_T / fs;    % tiempos de los picos R
     HRV_t = t_R(2:end);    % tiempos correspondientes a cada RR
 
@@ -44,6 +79,7 @@
     
     % Parameters used for the extraction of the ECG marquers
     Experiments(rodent).experiment_number(Experiment_number).function_parameters.Threshold = th_ECG_inf;
+    Experiments(rodent).experiment_number(Experiment_number).function_parameters.Threshold_sup = th_ECG_sup;
     Experiments(rodent).experiment_number(Experiment_number).function_parameters.F_max = f_max;
     Experiments(rodent).experiment_number(Experiment_number).function_parameters.F_low_pass = f_low_pass;
     Experiments(rodent).experiment_number(Experiment_number).function_parameters.Qual_factor = Q;
@@ -75,13 +111,21 @@
     Experiments(rodent).experiment_number(Experiment_number).marquers.HRV_t = HRV_t;
 
 
-
+if Experimental_type ~= "Control"
     %Extraction of the times it is ON and OFF the stimulation
     [stim_on_off, env_smooth, threshold_stim, start_idx, end_idx] = extract_stim_times(low_cut, high_cut, window_smooth, n, stim, fs, max_gap_sec, min_dur_sec);
-
     Experiments(rodent).experiment_number(Experiment_number).obtained_signals.stim_ON_OFF = stim_on_off;
     Experiments(rodent).experiment_number(Experiment_number).obtained_signals.env_SMOOTH = env_smooth;
     Experiments(rodent).experiment_number(Experiment_number).obtained_signals.threshold_Stim = threshold_stim;
+
+else
+
+    start_idx = [235737; 3534752; 6838248; 10141315; 13524569];
+    end_idx = [514941; 3815503; 7119072; 10422037; 13805052];        
+
+end
+
+
     Experiments(rodent).experiment_number(Experiment_number).obtained_signals.start_stim_positions = start_idx;
     Experiments(rodent).experiment_number(Experiment_number).obtained_signals.end_stim_positions = end_idx;
 
@@ -94,7 +138,7 @@
     all_before_HF, all_during_HF, all_after_HF,...
     all_before_TP, all_during_TP, all_after_TP,...
     all_before_LF_HF_ratio, all_during_LF_HF_ratio, all_after_LF_HF_ratio...
-    ] = fill_hrv_parameters(start_idx, end_idx, fs, R_T, n);
+    ] = fill_hrv_parameters(start_idx, end_idx, fs, R_T, studied_intervals);
 
     
     Experiments(rodent).experiment_number(Experiment_number).marquers.before_MNN = all_before_mnn;
@@ -175,3 +219,9 @@
 
 
     Experiments(rodent).experiment_number(Experiment_number).marquers.time_intervals_small = sort(time_intervals);
+
+
+
+    create_excel_N_seconds_marquers_rest;
+    create_excel_N_seconds_marquers_stim;
+    create_excel_N_seconds_marquers_baseline;

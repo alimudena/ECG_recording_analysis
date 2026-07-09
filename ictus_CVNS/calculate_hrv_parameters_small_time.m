@@ -88,8 +88,8 @@ function [MNN_N_baseline, SDDN_N_baseline, RMSSD_N_baseline, LF_N_baseline, HF_N
     
     
     %During rests
-    starts_during_rest = [0; end_idx(1:end-1)];
-    ends_during_rest = start_idx;
+    starts_during_rest = end_idx;
+    ends_during_rest = [start_idx(2:end); max(R_T)];
     maximum_falues = floor(max((ends_during_rest-starts_during_rest)/small_time));
     
     MNN_N_rest = zeros(length(start_idx), length(maximum_falues));
@@ -106,8 +106,9 @@ function [MNN_N_baseline, SDDN_N_baseline, RMSSD_N_baseline, LF_N_baseline, HF_N
         rest_end = ends_during_rest(resting_repetition);
     
         number_of_samples = floor((rest_end - rest_init)/small_time);
-    
+
         for studied_time = 0:(number_of_samples-1)
+
             init_t = rest_init + studied_time*small_time;
             end_t = init_t + small_time;
             if end_t > rest_end
