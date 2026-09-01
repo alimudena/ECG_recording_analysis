@@ -1,0 +1,16 @@
+NN_statistics_RXX: tienen los datos de los parámetros estadísticos del paper de referencia. Las ventanas para sacar esos datos son de 5 segundos.
+- Los baseline son datos de antes de la primera estimulación en ventanas de 5 segundos
+- Los stim son datos de durante cada una de las estimulaciones en ventanas de 5 segundos
+- Los rest son datos de entre estimulaciones, en ventanas de 5 segundos. También se incluye el análisis tras la última estimulación
+
+PCM_before_during_after_statistics:
+- Tiene los datos de los estadísticos antes, durante y después de cada una de las estimulaciones, las ventanas para sacar estos datos son de 30 segundos.
+
+PCM_SX_PX_grouped_mean_std:
+- Tiene los datos de las gráficas que comparan la variación de los estadísticos con respecto al baseline DE TODOS LOS EXPERIMENTOS, TANTO LOS CONTROL COMO LOS ESTIMULADOS
+(este excel se podría extraer de PCM_before_during_after_statistics con ventanas y tiempos que se prefiera, teniendo en cuenta que los datos están cada 5 segundos)
+
+
+PCM_SX_PX_grouped_mean_std_only_stimulations: 
+- Tiene lo mismo que PCM_SX_PX_grouped_mean_std pero con los datos únicamente de los estimulados (los que no son control).
+

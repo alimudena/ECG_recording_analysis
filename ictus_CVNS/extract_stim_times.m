@@ -77,7 +77,7 @@ function [stim_array, env_smooth, threshold_stim, start_idx, end_idx] = extract_
     
     % Caso especial: si termina en 1
     if stim_clean(end) == 1
-        end_idx = [end_idx, length(stim_ON_OFF)];
+        end_idx = [end_idx; length(stim)];
     end
 
 

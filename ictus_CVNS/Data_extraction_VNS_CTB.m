@@ -22,23 +22,31 @@ VNS009_R04;
 clc
 clear
 close all
-rodent = 4;
-VNS005_R04;
+rodent = 6;
+VNS006_R01;
+%% 
+close all
+rodent = 6;
+experiment_number = 1;
+plot_ECG_and_HRV(Experiments, rodent, experiment_number);
+plot_with_peaks_VNS(Experiments, rodent, experiment_number);
+plot_ECG_and_HRV_and_stim(Experiments, rodent, experiment_number);
+plot_ECG_and_PPM_and_stim(Experiments, rodent, experiment_number);
+plot_with_peaks_discarded(Experiments, rodent, experiment_number);
+plot_stim_ON_OFF(Experiments, rodent, experiment_number);
 
 
 
 %% VNS005
 rodent = 1;
 VNS005_R01;
-%%
+
 rodent = 2;
 VNS005_R02;
 
 rodent = 3;
 VNS005_R03;
 
-% rodent = 4;
-% VNS005_R04;
 
 %% VNS008
 rodent = 1;
@@ -111,14 +119,7 @@ clear
 load("Experiments.mat");
 
 %%
-rodent = 3;
-experiment_number = 1;
-%%
-plot_with_peaks_VNS(Experiments, rodent, experiment_number);
-%%
-plot_ECG_and_HRV(Experiments, rodent, experiment_number);
-%%
-plot_stim_ON_OFF(Experiments, rodent, experiment_number);
+
 %%
 
 % Todas las estimulaciones del experimento

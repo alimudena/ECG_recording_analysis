@@ -21,10 +21,11 @@ Experiments(rodent).ID= "VNS008_R1";
     %%------ Alimu fill in ------%%
     f_max = 500;
     f_low_pass = 250;
-    Q = 100;          % Quality factor (higher = thiner)
+    Q = 50;          % Quality factor (higher = thiner)
     f_high_pass = 1;
     window_ms = 15; 
     th_ECG_inf = 10;
+    th_ECG_sup = 500;
     f0 = 20.325;     % Frequency of the noise
     peak_distance = 0.01; %*fs
     f_max_plot = 5000;

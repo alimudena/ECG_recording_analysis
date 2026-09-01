@@ -25,6 +25,7 @@ Experiments(rodent).ID= "VNS005_R3";
     f_high_pass = 1;
     window_ms = 5; 
     th_ECG_inf = 45;
+    th_ECG_sup = 500;
     f0 = 20.325;     % Frequency of the noise
     peak_distance = 0.01; %*fs
     f_max_plot = 5000;

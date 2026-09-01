@@ -11,6 +11,27 @@ Experimental_polarity = ["Unipolar", "Bipolar"];
 
 Experiments = struct();
 
+
+%% PRUEBAS 
+clc
+clear
+%Repetir R14 - 3
+rodent = 16;
+PCM_aVNS_R16;
+%%
+% rodent = 12;
+close all
+experiment_number = 3;
+plot_ECG_and_HRV(Experiments, rodent, experiment_number);
+
+plot_with_peaks_VNS(Experiments, rodent, experiment_number);
+plot_ECG_and_HRV_and_stim(Experiments, rodent, experiment_number);
+plot_ECG_and_PPM_and_stim(Experiments, rodent, experiment_number);
+plot_with_peaks_discarded(Experiments, rodent, experiment_number);
+plot_stim_ON_OFF(Experiments, rodent, experiment_number);
+
+
+
 %% estimulados
 % clc
 % clear
@@ -23,7 +44,22 @@ rodent = 4;
 PCM_aVNS_R04;
 % save('STROKE_R04.mat', 'Experiments');
 
-%%control
+
+rodent = 10;
+PCM_aVNS_R10;
+% save('STROKE_R10.mat', 'Experiments');
+
+rodent = 11;
+PCM_aVNS_R11;
+% save('STROKE_R11.mat', 'Experiments');
+
+rodent = 12;
+PCM_aVNS_R12;
+% save('STROKE_R12.mat', 'Experiments');
+
+rodent = 14;
+PCM_aVNS_R14;
+%% control
 rodent = 2;
 PCM_aVNS_R02;
 % save('STROKE_R02.mat', 'Experiments');
@@ -32,6 +68,18 @@ rodent = 3;
 PCM_aVNS_R03;
 % save('STROKE_R03.mat', 'Experiments');
 
+rodent = 7;
+PCM_aVNS_R07;
+% save('STROKE_R07.mat', 'Experiments');
+
+rodent = 13;
+PCM_aVNS_R13;
+% save('STROKE_R13.mat', 'Experiments');
+
+rodent = 15;
+PCM_aVNS_R15;
+% save('STROKE_R15.mat', 'Experiments');
+%%
 Name_experiment = 'PCM_before_during_after_statistics_HRV.xlsx';
 parameters_excel_creation;
 
@@ -44,24 +92,11 @@ writetable(T, Name_experiment);
 % close all
 bar_graph_plot_all_experiments
 
-Name_experiment = 'PCM_SX_PX_grouped_mean_std.xlsx';
+Name_experiment = 'PCM_SX_PX_grouped_mean_std_only_stimulations.xlsx';
 
 % Mostrar tabla
 disp(Resultados)
 writetable(Resultados, Name_experiment);
-
-%%
-rodent = 1;
-experiment_number = 1;
-plot_ECG_and_HRV(Experiments, rodent, experiment_number);
-plot_with_peaks_VNS(Experiments, rodent, experiment_number);
-plot_ECG_and_HRV_and_stim(Experiments, rodent, experiment_number);
-plot_ECG_and_PPM_and_stim(Experiments, rodent, experiment_number);
-plot_with_peaks_discarded(Experiments, rodent, experiment_number);
-plot_stim_ON_OFF(Experiments, rodent, experiment_number);
-
-
-
 
 
 
